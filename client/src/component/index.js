@@ -1,0 +1,11 @@
+export { default as Navbar } from './navbar/Navbar';
+export { default as Hero } from './heroSection/Hero';
+export { default as Services } from './services/Services';
+export { default as Advantage } from './avantage/Advantage';
+export { default as Properties } from './properties/Properties';
+export { default as Footer } from './footer/Footer';
+export { default as Signup } from './signup/Signup';
+export { default as SignIn } from './SignIn/SignIn';
+export { default as SearchBar } from './SearchBar/SearchBar';
+export { default as Property } from './propertyWrapper/Property';
+export { default as dashboard } from './Dashboard/Dashboard';

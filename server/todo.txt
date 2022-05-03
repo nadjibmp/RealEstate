@@ -1,0 +1,3 @@
+1- control the inputs in the profile page both in server side and client side
+2- control the inputs in the signin page and sign up page in server 
+3-add image profile in profile page
