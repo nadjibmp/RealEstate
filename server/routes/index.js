@@ -1,8 +1,11 @@
 var express = require('express');
 const { Register, Login, Logout, GetInformations, UpdateInformation} = require('../controllers/Users.controller');
+const { GetProperties } = require('../controllers/Property.controller');
 var router = express.Router();
 const auth = require('../middleware/auth')
 
+// routes for retrieving all properties or one property
+router.use('/property', GetProperties)
 
 // routes for inscription 
 router.post('/inscrire', Register)
