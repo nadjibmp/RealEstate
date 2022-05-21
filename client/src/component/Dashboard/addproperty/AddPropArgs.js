@@ -1,28 +1,57 @@
+import * as yup from "yup";
+
 export const initialValues = {
     categorie: "",
-    typebien: "",
-    superficie: "",
-    etage: "",
-    nombrepiece: "",
+    typeBien: "",
+    superficieBien: "",
+    superficieTerrain: "",
+    etages: "",
+    nombrePiece: "",
     papier: "",
-    jardin: "",
-    piscine: "",
-    asceensseur: "",
-    terasse: "",
+    anneeConstrucion:"",
     description: "",
     prix: "",
-    conditionpaimenet: "",
-    wilaya:"",
-    adresse:"",
-    
+    wilaya: "",
+    commune: "",
+    adresse: "",
+    suppliments:[],
+    conditionsPaiment:[],
 };
+
+export const validationSchema = yup.object({
+    categorie: yup
+        .string()
+        .required("Choisir la categorie du transaction ?"),
+    typeBien: yup
+        .string()
+        .required("Choisir le type du bien ?"),
+    superficieBien: yup
+        .string()
+        .matches(/(?=.*?[0-9])/, "Entrer des chiffres seulement !")
+        .required("Entrez la superficie de votre bien"),
+    nombrePiece: yup
+        .string()
+        .matches(/(?=.*?[0-9])/, "Entrer des chiffres seulement !")
+        .required("Veuillez mentionner le nombre des piéces !"),
+    prix: yup
+        .string()
+        .matches(/(?=.*?[0-9])/, "Entrer des chiffres seulement !")
+        .required("Veuillez ajouter un prix !"),
+    wilaya: yup
+        .string()
+        .required("Entrez votre vilaya !"),
+    commune: yup
+        .string()
+        .required("Entrez votre commune !"),
+});
 
 export const categorieList = [
     { key: 'Choisir une option', value: '' },
-    { key: 'Vente', value: "Vente" },
-    { key: 'Location', value: "Location" },
-    { key: 'Location Vacance', value: "LocationVacance" },
-    { key: 'Echange', value: "Echange" },
+    { key: 'À  vendre', value: "vendre" },
+    { key: 'À  louer', value: "louer" },
+    { key: 'À  louer pour les vacances', value: "louer pour les vacances" },
+    { key: 'À  louer par ans', value: "louer par ans" },
+    { key: 'À échanger', value: "échanger" },
 ]
 
 export const TypeBien = [
@@ -40,22 +69,21 @@ export const TypeBien = [
     { key: 'Bungalow', value: "Bungalow" },
     { key: 'Usine', value: "Usine" },
     { key: 'Autre', value: "Autre" },
-    
 ]
 
 export const Papiers = [
     { key: 'Choisir une option', value: '' },
-    { key: 'Promotion Immobiliére', value: "Promotion" },
-    { key: 'Acte notarié', value: "Acte" },
-    { key: 'Acte dans l\'indivision', value: "ActeIndivision" },
-    { key: 'Papier Timbré', value: "PapierTimbre" },
-    { key: 'Décision', value: "Decision" },
-    { key: 'Livret foncier', value: "Livret" },
+    { key: 'Promotion Immobiliére', value: "Promotion Immobiliére" },
+    { key: 'Acte notarié', value: "Acte notarié" },
+    { key: 'Acte dans l\'indivision', value: "Acte Indivision" },
+    { key: 'Papier Timbré', value: "Papier Timbre" },
+    { key: 'Décision', value: "Décision" },
+    { key: 'Livret foncier', value: "Livret foncier" },
 ]
 
 export const PaymentCondition = [
     { key: 'Choisir une option', value: '' },
-    { key: 'Promesse de vente possible', value: "promesse" },
-    { key: 'Paiment par tranche possible', value: "tranche" },
-    { key: 'Crédit bancaire possible', value: "crédit" },
+    { key: 'Promesse de vente possible', value: "Promesse de vente" },
+    { key: 'Paiment par tranche possible', value: "Paimenet par tranche" },
+    { key: 'Crédit bancaire possible', value: "Crédit bancaire" },
 ]

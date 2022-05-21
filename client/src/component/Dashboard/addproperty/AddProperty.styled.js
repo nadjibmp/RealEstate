@@ -114,9 +114,9 @@ export const FormControl = styled.div`
     flex-direction: ${({ row }) => row ? 'row' : 'column'};
     margin-top: 15px ;
     width:100%;
-    justify-content:center ;
+    justify-content:${({ center }) => center ? 'center' : 'flex-start'};
     align-items:  ${({ row }) => row ? 'center' : 'flex-start'};
-    .adresse-input{
+    .adresse-input, .price-input{
         width:95% !important ;
     }
     Select {
@@ -131,6 +131,22 @@ export const FormControl = styled.div`
         cursor: pointer;
         &:focus {
             border-color: #efa13b;
+        }
+    }
+    .text-area
+    {
+        width: 95%;
+        padding:20px;
+    }
+    .checkbox-wrapper
+    {
+        display: flex ;
+        flex-direction: row;
+        width:100%;
+        justify-content: center ;
+        align-items:center ;
+        > *{
+            margin-top:5px !important ;
         }
     }
 `

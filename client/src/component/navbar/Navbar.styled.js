@@ -11,7 +11,7 @@ export const NavbarWrapper = styled.nav`
     background-color: ${({ bgColor }) => bgColor ? "#082032" : "transparent"};
     position: fixed;
     top: 0;
-    z-index: 999;
+    z-index: 1999;
     width:100%;
     padding: 5px 0;
     transition: all 0.5s ease-out;
@@ -92,7 +92,7 @@ export const NavMenu = styled.ul`
     opacity: 1;
     background-color: #082032 !important;
     transition: all 0.6s ease;
-    z-index: 999;
+    z-index: 1999;
 }
 `;
 

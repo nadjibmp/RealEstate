@@ -180,6 +180,7 @@ export const GenderWrapper = styled.div`
   > label {
     margin-bottom: 0 !important;
     margin-left: 5px;
+    
   }
 `;
 

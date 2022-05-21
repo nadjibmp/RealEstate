@@ -8,7 +8,7 @@ import {
     CloseSpan
 } from "./ImageUploader.styled";
 
-function ImageUploader(props) {
+function PlanUploader(props) {
     //State to store Images
     const [tempBlobs, setTempBlobs] = useState([]);
     const [imagesFiles, setImagesFiles] = useState([]);
@@ -46,8 +46,6 @@ function ImageUploader(props) {
 
         let newImages = tempBlobs && tempBlobs.filter(element => element != ArrayImg[0]);
         setTempBlobs(newImages);
-
-
     }
 
     return (
@@ -70,8 +68,8 @@ function ImageUploader(props) {
                 <Row item xs={12} md={4}>
                     <div className="form-group">
                         <UploadIcon />
-                        <label htmlFor="file">Selectionnez Vos images...</label>
-                        <input type="file" id="file" name="Myfile" onChange={handleMultipleImages} multiple />
+                        <label htmlFor="plan">Selectionnez Vos images...</label>
+                        <input type="file" id="plan" name="myPlan" onChange={handleMultipleImages}  />
                     </div>
                 </Row>
             </Row>
@@ -79,4 +77,5 @@ function ImageUploader(props) {
     );
 }
 
-export default ImageUploader;
+export default PlanUploader;
+

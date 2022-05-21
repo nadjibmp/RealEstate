@@ -27,7 +27,7 @@ export const ImageUploaderWrapper = styled.div`
             opacity: 0;
             overflow: hidden;
             position: absolute;
-            z-index: -1;
+            z-index:-1;
         }
         input + label 
         {
@@ -76,14 +76,34 @@ export const ImageUploaderWrapper = styled.div`
     }
 `;
 
-export const CloseIcon = styled(RiCloseFill)`
-    font-size: 24px;
-    color: black; 
-    position:absolute;
-    z-index:99 ;
+export const CloseSpan = styled.span`
+    width:25px ;
+    height:25px ;
+    display: flex ;
+    justify-content:center;
+    align-items: center ;
+    position:absolute ;
     top: 15px;
     right:15px;
+    background-color: transparent;
+    font-family:'Open sans', sans-serif ;
+    border-radius:50% ;
+    cursor:pointer;
+    color: #fff ;
+    z-index:5 ;
+    font-size: 12px ;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;    transition: all ease-out 0.2s;
+
 `;
+
+export const CloseIcon = styled(RiCloseFill)`
+    position:absolute;
+    z-index:0;
+    font-size:15px;
+    top: 20px;
+    right:19px;
+    color:black;
+`
 
 const Mymove = keyframes`
     0% { transform: translateX(-5px);}

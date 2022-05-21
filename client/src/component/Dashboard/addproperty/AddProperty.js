@@ -1,31 +1,44 @@
-import { Formik, Form } from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useState, useEffect, useRef } from 'react'
 import Select from '../../signup/component/Select'
-import { categorieList, TypeBien, Papiers, PaymentCondition, initialValues } from './AddPropArgs'
-import { InputItem } from '../../signup/Signup.styled'
+import { categorieList, TypeBien, Papiers, initialValues, validationSchema } from './AddPropArgs'
+import { InputItem, InputLabel } from '../../signup/Signup.styled'
 import React from 'react'
-import { InputField } from '../../propertyWrapper/contact/Contact.styled'
+import { InputField } from '../../propertyWrapper/contact/Contact.styled';
+import { ErrorFieldWrapper } from '../../signup/Signup.styled'
 import {
     AddPropWrapper,
     FormHeader,
     FormControl,
     LabelInput,
     BtnSubmit,
-    MapWrapper
-} from './AddProperty.styled'
-import { InputLabel } from '../../signup/Signup.styled'
+    MapWrapper,
+} from './AddProperty.styled';
 import WilayaLatLong from './WilayaLatLong.json';
-import Commune from './Commune.json'
+import Commune from './Commune.json';
 import { CardContainer, Header } from '../profile/Profile.styled'
-import { Row } from '../Dashboard.styled'
-import Map from '../../annoncebody/mapComponent/Map'
-import ImageUploader from './ImageUploader'
+import { Row } from '../Dashboard.styled';
+import Map from '../../annoncebody/mapComponent/Map';
+import ImageUploader from './ImageUploader';
+import axios from 'axios'
+import PlanUploader from './PlanUploader'
+import { AlertBox } from '../../heroSection/Hero.styled'
 export const getContext = React.createContext();
 
 const AddProperty = () => {
+    axios.defaults.withCredentials = true;
+
+    //display alert on success
+    const [display, setDisplay] = useState(false)
 
     //creating state to store Cities
     const [villes, setVilles] = useState([]);
+
+    //State to set Images ....
+    const [images, setImages] = useState([]);
+
+    //state to set plan image
+    const [planImage, setPlanImage] = useState([]);
 
     //Creating State to store Communes based on Cities..
     const [communes, setCommunes] = useState([]);
@@ -40,20 +53,10 @@ const AddProperty = () => {
     const ref = useRef(null);
     const [disable, setDisable] = useState(false);
 
-    //for control state 
-    const [step, setStep] = useState(1);
+    //message came from backend
+    const [message, setMessage] = useState("");
 
-    //multi step form ...
-    const NextStep = () => {
-        if (step < 3) {
-            setStep(step + 1)
-        }
-    }
-    const PrevStep = () => {
-        if (step > 1) {
-            setStep(step - 1)
-        }
-    }
+
 
     // Getting coords of all wilaya in allgeria and put theme into selet box
     const getWilaya = () => {
@@ -77,6 +80,7 @@ const AddProperty = () => {
         setCommunes(tempArray.map(element => {
             return element;
         }))
+        setCommunes(communes => [{ key: "Selectionner votre commune", value: "" }, ...communes])
         flyTo();
     }
 
@@ -109,16 +113,65 @@ const AddProperty = () => {
             })
         }
     }
-    console.log(flyToPoint);
+
+    //Submit function ..
+    const onSubmit = (values, { resetForm }) => {
+        const formData = new FormData();
+        Object.values(images).forEach(img => { formData.append("Myfile", img) })
+        Object.values(values).forEach(element => { formData.append("data", element) })
+        Object.values(planImage).forEach(element => { formData.append("myPlan", element) })
+        console.log(latLong);
+        if (latLong != null) {
+            formData.append("lat", latLong.lat);
+            formData.append("lng", latLong.lng);
+        } else {
+            formData.append("lat", 0);
+            formData.append("lng", 0);
+        }
+        const localStorageValue = JSON.parse(localStorage.getItem('userID'));
+        formData.append("UserId", localStorageValue.userId);
+
+        axios
+            .post("http://localhost:3006/api/addListing", formData,
+                {
+                    headers: {
+                        'Content-Type': "multipart/form-data",
+                    }
+                })
+            .then((response) => {
+                setMessage(response.data.message);
+                setDisplay(true);
+                resetForm({ values: "" })
+                window.scrollTo(0, 0);
+                timer();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+    const timer =  () => {
+        setTimeout(() => {
+            setDisplay(false);
+        }, 5000)
+    }
+
+    //Sending 
     return (
         <Formik
             innerRef={ref}
             enableReinitialize
-            initialValues={initialValues}>
+            validationSchema={validationSchema}
+            initialValues={initialValues}
+            onSubmit={onSubmit}>
             {
                 Formik => {
                     return (
                         <>
+                            {
+                                display ?
+                                    <AlertBox variant="filled" severity="success">{message}</AlertBox>
+                                    : null
+                            }
                             <AddPropWrapper >
                                 <Row container>
                                     <Row item xs={12} md={12}>
@@ -144,17 +197,23 @@ const AddProperty = () => {
                                                                     options={categorieList}
                                                                 >
                                                                 </Select>
+                                                                <ErrorFieldWrapper>
+                                                                    <ErrorMessage name="categorie" />
+                                                                </ErrorFieldWrapper>
                                                             </FormControl>
                                                         </Row>
                                                         <Row item xs={6}>
                                                             <FormControl >
                                                                 <InputLabel>Type du Bien</InputLabel>
                                                                 <Select
-                                                                    name='typebien'
+                                                                    name='typeBien'
                                                                     options={TypeBien}
                                                                     onBlur={handleRef}
                                                                 >
                                                                 </Select>
+                                                                <ErrorFieldWrapper>
+                                                                    <ErrorMessage name="typeBien" />
+                                                                </ErrorFieldWrapper>
                                                             </FormControl>
                                                         </Row>
                                                         <Row item xs={12}>
@@ -166,18 +225,21 @@ const AddProperty = () => {
                                                             <FormControl >
                                                                 <InputLabel>Superficie du bien</InputLabel>
                                                                 <InputItem
-                                                                    name="superficiebien"
+                                                                    name="superficieBien"
                                                                     placeholder='En m²'
                                                                     type="number"
                                                                 >
                                                                 </InputItem>
+                                                                <ErrorFieldWrapper>
+                                                                    <ErrorMessage name="superficieBien" />
+                                                                </ErrorFieldWrapper>
                                                             </FormControl>
                                                         </Row>
                                                         <Row item xs={6}>
                                                             <FormControl >
                                                                 <InputLabel>Superficie du terrain</InputLabel>
                                                                 <InputItem
-                                                                    name="superficieterrain"
+                                                                    name="superficieTerrain"
                                                                     placeholder='En m²'
                                                                     type="number"
                                                                     disabled={disable}
@@ -189,7 +251,7 @@ const AddProperty = () => {
                                                             <FormControl >
                                                                 <InputLabel>Etage(s)</InputLabel>
                                                                 <InputItem
-                                                                    name="etage"
+                                                                    name="etages"
                                                                     placeholder='En Chiffre'
                                                                     type="number"
                                                                 >
@@ -200,11 +262,14 @@ const AddProperty = () => {
                                                             <FormControl >
                                                                 <InputLabel>Nombre de piéces</InputLabel>
                                                                 <InputItem
-                                                                    name="nombrepiece"
+                                                                    name="nombrePiece"
                                                                     placeholder='En Chiffre'
                                                                     type="number"
                                                                 >
                                                                 </InputItem>
+                                                                <ErrorFieldWrapper>
+                                                                    <ErrorMessage name="nombrePiece" />
+                                                                </ErrorFieldWrapper>
                                                             </FormControl>
                                                         </Row>
                                                         <Row item xs={6}>
@@ -221,7 +286,7 @@ const AddProperty = () => {
                                                             <FormControl >
                                                                 <InputLabel>Année de construction</InputLabel>
                                                                 <InputItem
-                                                                    name="anneeconstruction"
+                                                                    name="anneeConstrucion"
                                                                     placeholder='Année'
                                                                     type="number"
                                                                 >
@@ -236,31 +301,31 @@ const AddProperty = () => {
                                                         <Row container row>
                                                             <Row item xs={2}>
                                                                 <FormControl row>
-                                                                    <input type="checkbox" name='jardin' />
+                                                                    <Field type="checkbox" name='suppliments' value="jardin" />
                                                                     <LabelInput>Jardin</LabelInput>
                                                                 </FormControl>
                                                             </Row>
                                                             <Row item xs={2}>
                                                                 <FormControl row>
-                                                                    <input type="checkbox" name='piscine' />
+                                                                    <Field type="checkbox" name='suppliments' value="piscine" />
                                                                     <LabelInput>Piscine</LabelInput>
                                                                 </FormControl>
                                                             </Row>
                                                             <Row item xs={2}>
                                                                 <FormControl row>
-                                                                    <input type="checkbox" name='asceensseur' />
+                                                                    <Field type="checkbox" name='suppliments' value='ascensseur' />
                                                                     <LabelInput>Ascenseur</LabelInput>
                                                                 </FormControl>
                                                             </Row>
                                                             <Row item xs={3}>
                                                                 <FormControl row>
-                                                                    <input type="checkbox" name='Garage' />
+                                                                    <Field type="checkbox" name='suppliments' value="parkingGarage" />
                                                                     <LabelInput>Parking / Garage </LabelInput>
                                                                 </FormControl>
                                                             </Row>
                                                             <Row item xs={3}>
                                                                 <FormControl row>
-                                                                    <input type="checkbox" name="terasse" />
+                                                                    <Field type="checkbox" name="suppliments" value="terasse" />
                                                                     <LabelInput>Térasse</LabelInput>
                                                                 </FormControl>
                                                             </Row>
@@ -272,10 +337,9 @@ const AddProperty = () => {
                                                             <Row item xs={12}>
                                                                 <FormControl row>
                                                                     <InputField
-                                                                        as='textarea'
                                                                         name="description"
                                                                         placeholder=" Je suis intéressé par votre bien !"
-                                                                        rows='4'
+                                                                        className="text-area"
                                                                     />
                                                                 </FormControl>
                                                             </Row>
@@ -284,25 +348,40 @@ const AddProperty = () => {
                                                                     Prix
                                                                 </FormHeader>
                                                             </Row>
-                                                            <Row item xs={6}>
+                                                            <Row item xs={12}>
                                                                 <FormControl >
                                                                     <InputLabel>Prix</InputLabel>
                                                                     <InputItem
                                                                         name="prix"
                                                                         placeholder='En Dinard Algerien'
                                                                         type="number"
+                                                                        className="price-input"
                                                                     >
                                                                     </InputItem>
+                                                                    <ErrorFieldWrapper>
+                                                                        <ErrorMessage name="prix" />
+                                                                    </ErrorFieldWrapper>
                                                                 </FormControl>
+
                                                             </Row>
-                                                            <Row item xs={6}>
+                                                            <Row item xs={12}>
                                                                 <FormControl >
                                                                     <InputLabel>Conditions de paiment</InputLabel>
-                                                                    <Select
-                                                                        name='conditionpaimenet'
-                                                                        options={PaymentCondition}
-                                                                    >
-                                                                    </Select>
+                                                                    <div className='checkbox-wrapper'>
+                                                                        <FormControl row center>
+                                                                            <Field type="checkbox" name='conditionsPaiment' value='Promesse de vente' />
+                                                                            <LabelInput>Promesse de vente</LabelInput>
+                                                                        </FormControl>
+                                                                        <FormControl row center>
+                                                                            <Field type="checkbox" name='conditionsPaiment' value='Paiment par tranche' />
+                                                                            <LabelInput>Paiment par tranche</LabelInput>
+                                                                        </FormControl>
+                                                                        <FormControl row center>
+                                                                            <Field type="checkbox" name='conditionsPaiment' value='Crédit bancaire possible' />
+                                                                            <LabelInput>Crédit bancaire possible</LabelInput>
+                                                                        </FormControl>
+                                                                    </div>
+
                                                                 </FormControl>
                                                             </Row>
                                                         </Row>
@@ -320,6 +399,9 @@ const AddProperty = () => {
                                                                     onBlur={getCommune}
                                                                 >
                                                                 </Select>
+                                                                <ErrorFieldWrapper>
+                                                                    <ErrorMessage name="wilaya" />
+                                                                </ErrorFieldWrapper>
                                                             </FormControl>
                                                         </Row>
                                                         <Row item xs={12} md={6}>
@@ -330,6 +412,9 @@ const AddProperty = () => {
                                                                     options={communes}
                                                                 >
                                                                 </Select>
+                                                                <ErrorFieldWrapper>
+                                                                    <ErrorMessage name="commune" />
+                                                                </ErrorFieldWrapper>
                                                             </FormControl>
                                                         </Row>
                                                         <Row item xs={12} md={12}>
@@ -366,18 +451,29 @@ const AddProperty = () => {
                                                 <Row item xs={12}>
                                                     <MapWrapper >
                                                         <FormHeader>
-                                                            Uploadez vos images
+                                                            Images de votre bien
                                                         </FormHeader>
                                                     </MapWrapper>
                                                 </Row>
                                                 <Row item xs={12}>
-                                                    <ImageUploader/>
+                                                    <ImageUploader setImages={setImages} />
+                                                </Row>
+                                                <Row item xs={12}>
+                                                    <MapWrapper >
+                                                        <FormHeader>
+                                                            Image de votre plan
+                                                        </FormHeader>
+                                                    </MapWrapper>
+                                                </Row>
+                                                <Row item xs={12}>
+                                                    <PlanUploader setImages={setPlanImage} />
                                                 </Row>
                                             </Row>
-                                            {/* Button to navigate over the form  */}
-                                            <div className="step-control-wrapper">
-                                                <BtnSubmit type="submit">Créer</BtnSubmit>
-                                            </div>
+                                            <Form>
+                                                <div className="step-control-wrapper">
+                                                    <BtnSubmit type="submit">Créer</BtnSubmit>
+                                                </div>
+                                            </Form>
                                         </CardContainer>
                                     </Row>
                                 </Row>
