@@ -15,9 +15,9 @@ export const CommentWrapper = styled.div`
     }
 `;
 
-export const Row  = styled(({row, paddingTop, ...props}) => <Grid {...props}/>)`
+export const Row = styled(({ row, paddingTop, ...props }) => <Grid {...props} />)`
     display: flex;
-    flex-direction: ${({ row }) => row ?  'row !important' : 'column !important'}; 
+    flex-direction: ${({ row }) => row ? 'row !important' : 'column !important'}; 
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -37,8 +37,27 @@ export const Header = styled.h4`
 export const CommWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    height: 545px;
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+    width: 10px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #E7E0FD; 
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #9379EE; 
+    }
 `;
 
 export const FormWrapper = styled.div`

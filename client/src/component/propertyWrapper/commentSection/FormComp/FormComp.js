@@ -1,36 +1,47 @@
-import React from 'react'
-import { Formik, Form } from "formik";
-import { 
-    ContactBtn, 
+import React, { useRef } from 'react'
+import { Formik, Form, ErrorMessage } from "formik";
+import * as yup from "yup";
+import {
+    ContactBtn,
     InputField,
     FormWrapper,
-    CommentIcon } from './Form.styled';
-const initialValues = {
-    commentaire: "",
-};
-
-const onSubmit = (values) => {
-    console.log(values);
-};
+    CommentIcon
+} from './Form.styled';
+import { ErrorFieldWrapper } from '../../../signup/Signup.styled';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 
-const FormComp = () => {
+
+const FormComp = ({update, state}) => {
+    const ref = useRef(null);
+    const params = useParams();
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+        axios
+        .post(`http://localhost:3006/api/postComments/`,[ref.current.value, params.id])
+        .then(result => {
+            ref.current.value = "";
+            update(!state);
+        })
+        .catch(error => {
+            console.log(console.log());
+        })
+    };
+
     return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-        >
             <FormWrapper>
-                <Form>
+                <form onSubmit={onSubmit}>
                     <InputField
                         name="commentaire"
                         placeholder='Donnez votre avis'
-                        as="textarea"
+                        required
+                        ref={ref}
                     />
-                    <ContactBtn><CommentIcon/> Donnez votre avis</ContactBtn>
-                </Form>
+                    <ContactBtn type="submit"><CommentIcon /> Donnez votre avis</ContactBtn>
+                </form>
             </FormWrapper>
-        </Formik>
     )
 }
 

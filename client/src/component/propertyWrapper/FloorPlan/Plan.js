@@ -5,14 +5,14 @@ import {
     PlanWrapperImg,
     PlanImg
 } from './Plan.styled'
-function Plan() {
+function Plan({ plan_url, plan_img_alt }) {
     return (
         <PlanWrapper>
             <PlanHeader>
-                Plan  
+                Plan
             </PlanHeader>
             <PlanWrapperImg>
-                <PlanImg src="/assets/plan.jpg"/>
+                <PlanImg src={`http://localhost:3006/images/${plan_url}`} alt={`plan ${plan_img_alt}`}/>
             </PlanWrapperImg>
         </PlanWrapper>
     )

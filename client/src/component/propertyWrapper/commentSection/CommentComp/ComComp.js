@@ -9,21 +9,21 @@ import {
     Message
 } from './ComComp.styled'
 
-const ComComp = () => {
+const ComComp = ({ imgProfilePath, nom, prenom, date, comment }) => {
     return (
         <>
             <CommentBox>
                 <Header>
                     <ProfilePicture>
-                        <img src='/profile.jpg' alt="profileimg"/>
+                        <img src='/profile.jpg' alt="profileimg" />
                     </ProfilePicture>
                     <NameTimeWrapper>
-                        <Name>Ahmed Nadjib</Name>
-                        <Time>06:30 pm</Time>
+                        <Name>{nom + prenom}</Name>
+                        <Time>{new Date(date).toDateString()}</Time>
                     </NameTimeWrapper>
                 </Header>
                 <Message>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book
+                    {comment}
                 </Message>
             </CommentBox>
         </>

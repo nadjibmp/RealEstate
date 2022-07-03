@@ -132,12 +132,12 @@
         "population_proper": "178915"
     },
     {
-        "city": "Bejaïa",
+        "city": "Béjaïa",
         "lat": "36.7511",
         "lng": "5.0642",
         "country": "Algeria",
         "iso2": "DZ",
-        "admin_name": "Bejaïa",
+        "admin_name": "Béjaïa",
         "capital": "admin",
         "population": "176139",
         "population_proper": "176139"
@@ -159,7 +159,7 @@
         "lng": "4.7667",
         "country": "Algeria",
         "iso2": "DZ",
-        "admin_name": "Bordj Bou Arréridj",
+        "admin_name": "Bordj Bou Arreridj",
         "capital": "admin",
         "population": "168346",
         "population_proper": "168346"
@@ -214,7 +214,7 @@
         "lng": "4.5419",
         "country": "Algeria",
         "iso2": "DZ",
-        "admin_name": "M’sila",
+        "admin_name": "M'Sila",
         "capital": "admin",
         "population": "150000",
         "population_proper": "100000"
@@ -368,7 +368,7 @@
         "lng": "7.1150",
         "country": "Algeria",
         "iso2": "DZ",
-        "admin_name": "Oum el Bouaghi",
+        "admin_name": "Oum El Bouaghi",
         "capital": "admin",
         "population": "100821",
         "population_proper": "100821"
@@ -495,12 +495,12 @@
         "population_proper": "16251"
     },
     {
-        "city": "Aïn Temouchent",
+        "city": "Ain Temouchent",
         "lat": "35.3044",
         "lng": "-1.1400",
         "country": "Algeria",
         "iso2": "DZ",
-        "admin_name": "Aïn Temouchent",
+        "admin_name": "Aïn Témouchent",
         "capital": "admin",
         "population": "",
         "population_proper": ""

@@ -6,6 +6,15 @@ import { FaBath } from "react-icons/fa";
 import { GiResize } from "react-icons/gi";
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { keyframes } from 'styled-components'
+
+const likeAnimation = keyframes`
+0% { transform: scale(1) }
+90% { transform: scale(1.2) }
+100% { transform: scale(1.1) }
+`
+
+    ;
 
 export const Card = styled.div`
     display: flex;
@@ -15,6 +24,7 @@ export const Card = styled.div`
     padding: 10px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     width: 365px;
+    height: 500px;
 `;
 
 export const CardHeader = styled.div`
@@ -98,14 +108,18 @@ export const CardBody = styled.div`
     padding: 10px ;
 `;
 
-export const CardBodyItem = styled(({start, row, ...props}) => <div {...props}/>)`
+export const CardBodyItem = styled(({ start, row, ...props }) => <div {...props} />)`
     display: flex;
     flex-direction:${({ row }) => row ? 'row' : 'column'} ;
     margin: 10px;
     justify-content: space-between;
     align-items: ${({ start }) => {
-    return start ? 'flex-start' : 'center';
-}};
+        return start ? 'flex-start' : 'center';
+    }};
+    .animate{
+        animation:${likeAnimation} 0.3s 1;
+        cursor:pointer;
+    }
 `;
 
 export const Title = styled.h5`
@@ -130,7 +144,7 @@ export const Address = styled.p`
     margin: 0!important;
 `;
 
-export const Price  = styled(Title)`
+export const Price = styled(Title)`
     color: orange;
     color: #72CDB5;
     font-family: "poppins";
@@ -138,21 +152,21 @@ export const Price  = styled(Title)`
     font-weight: 500;
 `;
 
-export const LocationIcon  = styled(IoLocationSharp)`
+export const LocationIcon = styled(IoLocationSharp)`
     color: rgba(0, 0, 0, 0.8);
     margin-right: 5px;
 `;
 
-export const IconWrapper = styled(({width,spacebetween,aligncenter, ...props}) => <div {...props}/>)`
+export const IconWrapper = styled(({ width, spacebetween, aligncenter, ...props }) => <div {...props} />)`
     display: flex;
     flex-direction: row;
     font-family: 'rubik', sans-serif;
     font-weight: 300;
     font-size: 14px;
     color: rgba(0,0,0,0.5);
-    align-items: ${({aligncenter}) => aligncenter ? 'center' : ""};
-    justify-content: ${({spacebetween}) => spacebetween ? " space-between" : "unset"};
-    width: ${({width}) => width ? '100%' : 'unset'};
+    align-items: ${({ aligncenter }) => aligncenter ? 'center' : ""};
+    justify-content: ${({ spacebetween }) => spacebetween ? " space-between" : "unset"};
+    width: ${({ width }) => width ? '100%' : 'unset'};
     > * {
         margin-right: 7px;
     } 
@@ -194,14 +208,18 @@ export const Btn = styled.button`
     justify-content: center;
     align-items: center;
     vertical-align: middle;
+    font-size:15px;
     margin-right: 5px;
-    padding: 8px 15px;
+    padding: 8px 7px 8px 2px;
     border-radius: 10px;
-    background-color: ${({bgcolor}) => bgcolor || '#fff'};
+    background-color: ${({ bgcolor }) => bgcolor || '#fff'};
     border: none;
-    color: ${({color}) => color || '#000'};
+    color: ${({ color }) => color || '#000'};
     *{
         margin: 0 5px;
+    }
+    > svg {
+        margin-bottom: 2px;
     }
 
 `;

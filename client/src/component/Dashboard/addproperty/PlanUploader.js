@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Form } from 'formik'
+import React, { useEffect, useState, useLocation } from "react";
+import styled from "styled-components";
 import { Row } from "../Dashboard.styled";
+import {
+    EditBtn,
+} from "../profile/Profile.styled";
+import { MdEdit } from "react-icons/md";
 import {
     ImageUploaderWrapper,
     UploadIcon,
@@ -8,7 +12,14 @@ import {
     CloseSpan
 } from "./ImageUploader.styled";
 
+const EditIcon = styled(MdEdit)`
+    font-size: 20px;
+    color:#fff !important;
+    margin: 0 auto;
+`;
+
 function PlanUploader(props) {
+
     //State to store Images
     const [tempBlobs, setTempBlobs] = useState([]);
     const [imagesFiles, setImagesFiles] = useState([]);
@@ -50,7 +61,7 @@ function PlanUploader(props) {
 
     return (
         <ImageUploaderWrapper>
-            <Row container className="row-container" row>
+            <Row container className="row-container" row >
                 {
                     tempBlobs.map((url) => {
                         return (
@@ -65,13 +76,17 @@ function PlanUploader(props) {
                         )
                     })
                 }
-                <Row item xs={12} md={4}>
-                    <div className="form-group">
-                        <UploadIcon />
-                        <label htmlFor="plan">Selectionnez Vos images...</label>
-                        <input type="file" id="plan" name="myPlan" onChange={handleMultipleImages}  />
-                    </div>
-                </Row>
+                {
+
+                    <Row item xs={12} md={4}>
+                        <div className="form-group">
+                            <UploadIcon />
+                            <label htmlFor="plan">Selectionnez Vos images...</label>
+                            <input type="file" id="plan" name="myPlan" onChange={handleMultipleImages} />
+                        </div>
+                    </Row>
+                }
+
             </Row>
         </ImageUploaderWrapper>
     );

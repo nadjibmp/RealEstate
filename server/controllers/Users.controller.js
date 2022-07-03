@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../dbConfig/db.js");
-var cookieParser = require("cookie-parser");
-
+const multer = require('multer');
+const path = require('path');
 // in this controller you will find all the controllers concernig the user 
 //get informations, login, logout, etc. 
 
@@ -126,7 +126,8 @@ const GetInformations = (req, res) => {
                     email: result.rows[0].email,
                     tel: result.rows[0].numtelephone,
                     naissance: result.rows[0].naissance,
-                    sexe: result.rows[0].sexe
+                    sexe: result.rows[0].sexe,
+                    profile_pic : result.rows[0].profile_pic
                 });
             }
         })
@@ -136,43 +137,64 @@ const GetInformations = (req, res) => {
 
 }
 
+const storage = multer.diskStorage({
+    destination: path.join("./public/images"),
+    filename: function (req, file, cb) {
+        imageName = Date.now() + path.extname(file.originalname);
+        cb(null, imageName);
+    },
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 3000000 },
+}).any("Myfile");
+
+
 //middleware to update info's user
 const UpdateInformation = (req, res) => {
-    const userId = req.session.user.userId
-    const { nom, prenom, email, tel, naissance, sexe, motdepass1 } = req.body.information;
-    if (motdepass1 == undefined) {
-        pool
-            .query("UPDATE public.user SET nom = $1, prenom = $2, email = $3, numtelephone= $4, naissance = $5, sexe = $6  WHERE _id = $7",
-                [nom, prenom, email, tel, naissance, sexe, userId])
-            .then(result => {
-                return res
-                    .status(201)
-                    .json({ message: "Utilisateur mise à jour avec succés !" });
-            })
-            .catch(error => {
-                res.status(401).json({ message: "erreur Interne 401" })
-            })
-    } else {
-        bcrypt
-            .hash(motdepass1, 10)
-            .then((hash) => {
+    upload(req, res, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            const fileName = req.files[0].filename;
+            const userId = req.session.user.userId
+            const { nom, prenom, email, tel, naissance, sexe, motdepass1 } = JSON.parse(req.body.data);
+            if (motdepass1 == undefined) {
                 pool
-                    .query("UPDATE public.user SET nom = $1, prenom = $2, email = $3, numtelephone= $4, naissance = $5, sexe = $6, motdepass = $7  WHERE _id = $8",
-                        [nom, prenom, email, tel, naissance, sexe, hash, userId])
+                    .query("UPDATE public.user SET nom = $1, prenom = $2, email = $3, numtelephone= $4, naissance = $5, sexe = $6, profile_pic = $7  WHERE _id = $8",
+                        [nom, prenom, email, tel, naissance, sexe, fileName, userId])
                     .then(result => {
                         return res
                             .status(201)
                             .json({ message: "Utilisateur mise à jour avec succés !" });
                     })
                     .catch(error => {
+
                         res.status(401).json({ message: "erreur Interne 401" })
                     })
-            })
-            .catch((err) => {
-                return res.status(400).json({ message: err });
-            })
-    }
-
+            } else {
+                bcrypt
+                    .hash(motdepass1, 10)
+                    .then((hash) => {
+                        pool
+                            .query("UPDATE public.user SET nom = $1, prenom = $2, email = $3, numtelephone= $4, naissance = $5, sexe = $6, motdepass = $7, profile_pic = $8  WHERE _id = $9",
+                                [nom, prenom, email, tel, naissance, sexe, hash, fileName, userId])
+                            .then(result => {
+                                return res
+                                    .status(201)
+                                    .json({ message: "Utilisateur mise à jour avec succés !" });
+                            })
+                            .catch(error => {
+                                res.status(401).json({ message: "erreur Interne 401" })
+                            })
+                    })
+                    .catch((err) => {
+                        return res.status(400).json({ message: err });
+                    })
+            }
+        }
+    })
 }
 
 module.exports = { Register, Login, Logout, GetInformations, UpdateInformation };

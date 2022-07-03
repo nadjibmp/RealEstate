@@ -56,7 +56,7 @@ const Navbar = () => {
     useEffect(() => {
         if( location.pathname === '/Annonces'                   || 
             location.pathname === '/dashboard'                  || 
-            location.pathname === '/proprietes'                 || 
+            location.pathname.includes('/proprietes')           || 
             location.pathname === '/dashboard/main'             || 
             location.pathname === '/dashboard/msgDashboard'     || 
             location.pathname === '/dashboard/properties'       ||
@@ -65,7 +65,7 @@ const Navbar = () => {
             location.pathname === '/dashboard/messages'         ||
             location.pathname === '/dashboard/profile'          ||
             location.pathname === '/dashboard/calendar'         ||
-            location.pathname === '/dashboard/addproperty'         ||
+            location.pathname === '/dashboard/addproperty'      ||
             offset !== 0) {
             setBgcolor(true);
             } else {

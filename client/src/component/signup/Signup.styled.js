@@ -279,7 +279,7 @@ export const ErrorFieldWrapper = styled.div`
   color: red;
   font-size: 13px;
   margin: 7px 0;
-  height: 0px;
+  height: 10px;
   font-family: "poppins";
 `;
 

@@ -9,7 +9,7 @@ export const FormWrapper = styled.div`
     width: 100%;
 `;
 
-export const InputField = styled(Field)`
+export const InputField = styled.textarea`
     width: 100%;
     padding: 10px 10px;
     box-sizing: border-box;
@@ -19,7 +19,7 @@ export const InputField = styled(Field)`
     font-family: 'Open Sans';
     color: #51547C;
     font-size: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     width: 100%;
     &::placeholder{
         color: #082032;
@@ -30,6 +30,7 @@ export const InputField = styled(Field)`
         border: 1px solid #1976d2;
     }
 `;
+
 
 export const ContactBtn = styled.button`
     display: flex;
@@ -47,6 +48,7 @@ export const ContactBtn = styled.button`
     letter-spacing: 0.5px;
     font-size: 15px;
     cursor: pointer;
+    margin-top: 20px;
     transition: all 0.2s ease-in-out;
     &:hover{
         opacity: 0.9;

@@ -23,6 +23,8 @@ import ImageUploader from './ImageUploader';
 import axios from 'axios'
 import PlanUploader from './PlanUploader'
 import { AlertBox } from '../../heroSection/Hero.styled'
+import { useNavigate } from "react-router-dom";
+
 export const getContext = React.createContext();
 
 const AddProperty = () => {
@@ -56,6 +58,8 @@ const AddProperty = () => {
     //message came from backend
     const [message, setMessage] = useState("");
 
+    //to navigate to another page 
+    let navigate = useNavigate();
 
 
     // Getting coords of all wilaya in allgeria and put theme into selet box
@@ -91,7 +95,8 @@ const AddProperty = () => {
 
     //to disable some checkboxes and inputs based on 'type du bien '
     const handleRef = () => {
-        if (ref) {
+        if (ref) 
+        {
             const { typebien } = ref.current.values;
             if (typebien === "Appartement" || typebien === "Studio" || typebien === "") {
                 setDisable(true);
@@ -120,7 +125,6 @@ const AddProperty = () => {
         Object.values(images).forEach(img => { formData.append("Myfile", img) })
         Object.values(values).forEach(element => { formData.append("data", element) })
         Object.values(planImage).forEach(element => { formData.append("myPlan", element) })
-        console.log(latLong);
         if (latLong != null) {
             formData.append("lat", latLong.lat);
             formData.append("lng", latLong.lng);
@@ -142,20 +146,13 @@ const AddProperty = () => {
                 setMessage(response.data.message);
                 setDisplay(true);
                 resetForm({ values: "" })
-                window.scrollTo(0, 0);
-                timer();
+                navigate("../properties")
             })
             .catch((err) => {
                 console.log(err);
             });
     }
-    const timer =  () => {
-        setTimeout(() => {
-            setDisplay(false);
-        }, 5000)
-    }
 
-    //Sending 
     return (
         <Formik
             innerRef={ref}

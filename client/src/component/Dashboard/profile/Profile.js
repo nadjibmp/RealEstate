@@ -1,10 +1,8 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { MdEdit } from "react-icons/md";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Row } from "../Dashboard.styled";
-import { initialValues, validationSchema } from './ProfileArgs.js'
 import { ErrorFieldWrapper } from '../../signup/Signup.styled'
 import {
   ProfileWrapper,
@@ -21,13 +19,15 @@ import {
   GenderWrapper,
   RadioItem,
 } from "../../signup/Signup.styled";
-
+import { validationSchema } from './ProfileArgs'
+import ProfilePictureUploader from './ProfilePictureUploader';
 const Profile = () => {
   axios.defaults.withCredentials = true;
   //state to manage show/hide password fields
   const [revealPassword, setRevealPassword] = useState(false);
   const [revealPassword2, setRevealPassword2] = useState(false);
 
+  const [profilePicture, setProfilePicture] = useState([]);
   //state to show if the update is successfull
   const [display, setDisplay] = useState(false)
 
@@ -45,16 +45,26 @@ const Profile = () => {
     tel: "",
     naissance: "",
     sexe: "",
-    motdepass1: ""
+    motdepass1: "",
+    profile_pic: ""
   });
-  const {nom, prenom, email, tel, naissance, sexe, motdepass1} = information;
+
+  const { nom, prenom, email, tel, naissance, sexe, motdepass1, profile_pic } = information;
+
+
   //submit function to update user information based on the user id
   const UpdateInformation = (values) => {
+    const formData = new FormData();
+    Object.values(profilePicture).forEach(img => formData.append("Myfile", img));
+    formData.append('data', JSON.stringify(information));
     axios
-      .put("http://localhost:3006/api/updateUser", {
-        information,
-        withCredentials: true,
-      })
+      .put("http://localhost:3006/api/updateUser", formData,
+        {
+          headers: {
+            'Content-Type': "multipart/form-data",
+            withCredentials: true,
+          }
+        })
       .then((response) => {
         setDisplay(true)
         setDisabled(true)
@@ -81,7 +91,7 @@ const Profile = () => {
         withCredentials: true,
       })
       .then((response) => {
-        const { nom, prenom, email, tel, naissance, sexe } = response.data;
+        const { nom, prenom, email, tel, naissance, sexe, profile_pic } = response.data;
         setInformation({
           nom,
           prenom,
@@ -89,6 +99,7 @@ const Profile = () => {
           tel,
           naissance: naissance.slice(0, 10),
           sexe,
+          profile_pic
         });
       })
       .catch((error) => {
@@ -98,7 +109,7 @@ const Profile = () => {
   return (
     <Formik
       enableReinitialize
-      initialValues={{nom, prenom, email, tel, naissance, sexe, motdepass1, motdepass2:""}}
+      initialValues={{ nom, prenom, email, tel, naissance, sexe, motdepass1, motdepass2: "" }}
       onSubmit={UpdateInformation}
       validationSchema={validationSchema}
     >
@@ -123,12 +134,7 @@ const Profile = () => {
                       <Form>
                         <Row container row>
                           <Row item xs={12} alignCenter>
-                            <div className="image-profile-wrapper">
-                              <div className="edit-icon">
-                                <MdEdit />
-                              </div>
-                              <img src="/profile.jpg" alt="my-profile-pic" />
-                            </div>
+                            <ProfilePictureUploader setImages={setProfilePicture} picture={profile_pic} />
                           </Row>
                           <Row item xs={12} md={6}>
                             <div className="input-wrapper">

@@ -11,7 +11,7 @@ import Home from './pages/Home'
 import SignUp from './pages/SignUp';
 import SignInn from './pages/SignInn';
 import Annonces from './pages/Annonces';
-import Property from './pages/property';
+import Propertie from './pages/Propertie';
 import { AuthProvider } from './component/Auth';
 import { Navbar, Footer } from './component/index';
 import { BrowserRouter as Router, Route, Routes, } from "react-router-dom";
@@ -27,7 +27,7 @@ function App() {
           <Route path='/apropos' element={<Home />} />
           <Route path="/enregistrer" element={<SignInn />} />
           <Route path='/annonces' element={<Annonces />} />
-          <Route path="/proprietes" element={<Property />} />
+          <Route path="/proprietes/:id" element={<Propertie />} />
           <Route path="/dashboard" element={<DashBoard />}>
             <Route path="main" element={<MainDashboard />} />
             <Route path="properties" element={<PropDashboard />} />

@@ -154,7 +154,7 @@ export const CardContainer = styled(StatContainer)`
 
     .table-title {
         font-weight: 500;
-        margin-bottom: 1px;
+        margin-bottom: 4px;
     }
 
     .table-address {
@@ -167,6 +167,7 @@ export const CardContainer = styled(StatContainer)`
         font-size: 1.2rem;
         font-weight: 500;
         margin-top: 3px;
+        margin-left: 3px;
     }
 
     .wrapper {

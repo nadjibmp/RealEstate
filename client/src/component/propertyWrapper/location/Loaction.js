@@ -1,11 +1,11 @@
 import React from 'react'
 import { LocationHeader, LocationWrapper, LocationWrapperImg } from './Location.styled'
-const Loaction = ({ children }) => {
+const Loaction = ({ children, title }) => {
     return (
         <>
             <LocationWrapper>
                 <LocationHeader>
-                    Position
+                    {title}
                 </LocationHeader>
                 <LocationWrapperImg>
                     {children}

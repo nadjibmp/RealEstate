@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
@@ -13,8 +14,8 @@ L.Icon.Default.mergeOptions({
     iconUrl: require('leaflet/dist/images/marker-icon.png').default,
     shadowUrl: require('leaflet/dist/images/marker-shadow.png').default
 });
-const Map = ({ zoom, setMark, locations, navigateto }) => {
-
+const Map = ({ zoom, setMark, locations, navigateto, clickable }) => {
+    const location = useLocation();
     //declaration of constant
     const [map, setMap] = useState(null);
     const data = useContext(DataSend);
@@ -51,8 +52,8 @@ const Map = ({ zoom, setMark, locations, navigateto }) => {
     //navigate between markers ...
     var locationObj = "";
     const navigate = () => {
-        if (map && locations || localLocation) {
-            locationObj = localLocation.find(lo => lo.key === data);
+        if (map && locations || locations) {
+            locationObj = locations.find(lo => lo.key === data);
             if (locationObj) {
                 map.flyTo(locationObj.position, 25);
             }
@@ -63,10 +64,10 @@ const Map = ({ zoom, setMark, locations, navigateto }) => {
     // navigate to that position 
     const navigateTo = () => {
         if (navigateto) {
-            if(map) {
+            if (map) {
                 map.flyTo(navigateto, zoom || 12);
             }
-            
+
         }
     }
     useEffect(() => {
@@ -79,23 +80,28 @@ const Map = ({ zoom, setMark, locations, navigateto }) => {
     return (
         <MapContain
             center={{ lat: 36.752887, lng: 3.042048 }}
-            zoom={zoom || 12}
+            zoom={zoom || 6}
             whenCreated={setMap}
         >
             {
-                localLocation.length > 0 && setMark ?
-                    localLocation.map(position => {
-                        return (
-                            <Marker
-                                key={position.key}
-                                position={position.position}
-                                interactive={false}
-                            />
-                        )
-                    })
+                location.pathname != '/dashboard/addproperty' ?
+                    locations.length > 0 && setMark ?
+                        locations.map(position => {
+                            return (
+                                <Marker
+                                    key={position.key}
+                                    position={position.position}
+                                    interactive={false}
+                                />
+                            )
+                        })
+                        : null
                     : null
             }
-            <LocationMarker />
+            {
+                clickable ?  <LocationMarker /> : null
+            }
+            
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                 url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"

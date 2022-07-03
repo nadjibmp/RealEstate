@@ -1,21 +1,22 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
+import axios from 'axios';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useTable, useGlobalFilter, usePagination } from 'react-table'
-import Mock_Data from '../proprieteDashboard/MOCK_DATA.json'
 import { COLUMNS } from './columns'
 import {
     Header,
     PropertyWrapper,
     SearchWrapper,
-    CardContainer
+    CardContainer,
 } from '../proprieteDashboard/propDashboard.styled';
 import { Row } from '../mainDashboard/MainDashboard.styled';
 import { SearchIcon } from '../../SearchBar/SearchBar.styled';
 import GlobalFilter from '../proprieteDashboard/GlobalFilter';
 
 function Liked() {
+    const [realData, setRealData] = useState([])
     const columns = useMemo(() => COLUMNS, []);
-    const data = useMemo(() => Mock_Data, []);
+    const data = realData;
     const {
         getTableProps,
         getTableBodyProps,
@@ -40,13 +41,50 @@ function Liked() {
     );
 
     const { globalFilter, pageIndex } = state;
+    //Fetching data from the server 'getting listing by id'
+    const getData = (req, res) => {
+        const id_user = JSON.parse(localStorage.getItem("userID"));
+        axios
+            .get("http://localhost:3006/api/GetAllPropertyILike",
+                {
+                    params: {
+                        id_user: id_user.userId,
+                    }
+                }
+            )
+            .then(result => {
+                const tempArray = [];
+                const { data } = result.data;
+                console.log(data);
+                data.map(element => {
+                    tempArray.push({
+                        "title": element[0].substring(element[0].indexOf("\"") + 1, element[0].lastIndexOf("\"")),
+                        "address": element[1].substring(element[1].indexOf('\"') + 1, element[1].lastIndexOf('\"')),
+                        "type": `à ${element[5]}`,
+                        "price": `DZD ${element[2]}`,
+                        "view": element[3] === "" ? `0 fois` : element[3],
+                        "date_pub": element[4],
+                        "image": `http://localhost:3006/images/${element[6].substring(element[1].indexOf('\"') + 1, element[1].lastIndexOf(''))}`
+                    })
+                })
+                setRealData(tempArray);
+            })
+            // console.log(data[0][0].substring(data[1][0].indexOf("\"") + 1, data[0][0].lastIndexOf("\"")));
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    useEffect(() => {
+        getData();
+        window.scrollTo(0, 0)
+    }, [])
 
     return (
         <>
             <PropertyWrapper>
-                <Row container row justifyCenter>
+                <Row container row justifyCenter="true" alignCenter>
                     <Row item xs={2} >
-                        <Header>Mes Préférés</Header>
+                        <Header>Mes Propriétés</Header>
                     </Row>
                     <Row item xs={8}>
                         <SearchWrapper>
@@ -76,6 +114,7 @@ function Liked() {
                                     </tr>
                                 ))
                             }
+
                         </thead>
                         <tbody {...getTableBodyProps()}>
                             {

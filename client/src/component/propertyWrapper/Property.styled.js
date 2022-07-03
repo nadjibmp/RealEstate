@@ -28,6 +28,15 @@ export const Row = styled(Grid)`
     align-items: flex-start;
     width: 100%;
     padding: ${({ paddingTop }) => paddingTop ? '10px  0 !important' : 'none'};
+    .cond-paimenet-title
+    {
+        font-size: 1.6rem;
+    font-family: 'Open Sans',sans-serif;
+    color: #3E416D;
+    margin: 0 0 10px 0;
+    box-sizing: border-box;
+    padding: 5px;
+    }
 `;
 
 export const PropertyInformation = styled.div`
@@ -45,4 +54,37 @@ export const ContactSection = styled.div`
     align-items: center;
     width: 100%;
     
+`;
+
+export const CondtionPaimentContainer = styled.div`
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 10px 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: rgb(100 100 111 / 10%) 0px 7px 29px 0px;
+    box-sizing: border-box;
+`;
+
+export const PaimentItem = styled.p`
+    padding: 10px 18px;
+    border-radius: 25px;
+    border: 1px solid #E1F8F1;
+    background-color: #E1F8F1;
+    font-family: 'rubik', sans-serif;
+    margin-right: 8px;
 `;

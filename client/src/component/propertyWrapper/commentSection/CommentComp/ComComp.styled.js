@@ -5,7 +5,7 @@ export const CommentBox = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     margin-top: 15px;
     background-color: #f8f9fca6;

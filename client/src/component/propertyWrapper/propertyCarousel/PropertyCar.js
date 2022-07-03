@@ -3,11 +3,17 @@ import {
     SliderComp,
     Carousel
 } from './PropertyCar.styled';
-import {Data} from '../../global/slider/SliderData'
-const PropertyCar = () => {
+
+const PropertyCar = ({img_data}) => {
+
+    var tempArray = img_data.split(",");
+    for (let index = 0; index < tempArray.length; index++) {
+        tempArray[index] = "http://localhost:3006/images/" + tempArray[index];            
+    }
+
     return (
         <Carousel >
-            <SliderComp slides={Data}/>
+            <SliderComp slides={tempArray}/>
         </Carousel>
     )
 }

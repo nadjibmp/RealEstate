@@ -4,30 +4,30 @@ import {
     ProgressContainer,
 } from './ProgressBar.styled'
 
-const ProgressBarContainer = () => {
+const ProgressBarContainer = ({ produitConsulte, produitListe, revues }) => {
     return (
         <>
             <ProgressContainer>
                 <div>
                     <div>
                         <span>Produit consulté</span>
-                        <span>55/Mois</span>
+                        <span>{produitConsulte}/Mois</span>
                     </div>
-                    <ProgresBar completed={60}  isLabelVisible={false} animateOnRender={true} bgColor='#9379EE'/>
+                    <ProgresBar completed={produitConsulte || 0} isLabelVisible={false} animateOnRender={true} bgColor='#9379EE' />
                 </div>
                 <div>
                     <div>
                         <span>Produit listé</span>
-                        <span>120 Unités</span>
+                        <span>{produitListe} Unités</span>
                     </div>
-                    <ProgresBar completed={60}  isLabelVisible={false} animateOnRender={true} bgColor='#9379EE'/>
+                    <ProgresBar completed={produitListe || 0} isLabelVisible={false} animateOnRender={true} bgColor='#9379EE' />
                 </div>
                 <div>
                     <div>
                         <span>Revues</span>
-                        <span>25 Commentaires</span>
+                        <span>{revues} Commentaires</span>
                     </div>
-                    <ProgresBar completed={60}  isLabelVisible={false} animateOnRender={true} bgColor='#9379EE'/>
+                    <ProgresBar completed={revues || 0} isLabelVisible={false} animateOnRender={true} bgColor='#9379EE' />
                 </div>
             </ProgressContainer>
         </>

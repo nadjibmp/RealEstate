@@ -4,7 +4,14 @@ import { MdOutlineNotificationsActive, MdOutlineAdd } from "react-icons/md";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BsCalendarDateFill } from "react-icons/bs";
 import { RendezVous } from "../../propertyWrapper/openHouse/OpenHouse.styled";
+import { keyframes } from 'styled-components'
 
+
+const breatheAnimation = keyframes`
+    0% { height: 8px; width: 8px; }
+    50% { height: 10px; width: 10px; opacity: 1 }
+    100% { height: 8px; width: 8px; opacity: 0.6; }
+`
 export const MainWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -65,9 +72,13 @@ export const Header = styled.div`
             height: 10px;
             border-radius: 50%;
             background-color: #EFA13B;
-            right: 6px;
+            right: 8px;
             top:0;
+            transition: all  ease-out;
             border: 1px solid #EFA13B;
+            animation-name: ${breatheAnimation};
+            animation-duration: 0.5s;
+            animation-iteration-count: infinite;
         }
         }
     }
@@ -186,9 +197,31 @@ export const StatContainer = styled.div`
 
 export const CommentsWrapper = styled.div`
     display: flex;
+    width: 100%;
     flex-direction: column;
-    justify-content: center;
+    -webkit-box-pack: center;
+    justify-content: flex-start;
+    -webkit-box-align: center;
     align-items: center;
+    height: 1122px;
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+    width: 10px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #E7E0FD; 
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: #9379EE; 
+    }
     hr {
         
         border-color: rgba(221, 221, 221, 0.2);
@@ -215,7 +248,7 @@ export const NotifIcon = styled(MdOutlineNotificationsActive)`
     transition: all 0.2s ease-out;
     position: relative;
     &:hover{
-        opacity: 0.80;
+        transform: scale(1.1);
     }
 `;
 

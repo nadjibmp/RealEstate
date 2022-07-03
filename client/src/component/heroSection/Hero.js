@@ -91,7 +91,7 @@ const Hero = (props) => {
     }
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
         getWilayas()
         return () => {
             clearTimeout(timer)

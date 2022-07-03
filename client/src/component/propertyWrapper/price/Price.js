@@ -2,11 +2,11 @@ import React from 'react'
 import {
     PriceWrapper
 } from "./Price.styled"
-const Price = () => {
+const Price = ({ price }) => {
     return (
         <>
             <PriceWrapper>
-                120 000,00 DZD
+                {price} DZD
             </PriceWrapper>
         </>
     )

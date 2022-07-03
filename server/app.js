@@ -10,6 +10,7 @@ const store = new session.MemoryStore()
 const bodyParser = require('body-parser')
 require('dotenv').config();
 
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(logger('dev'))
 app.use(express.json())
