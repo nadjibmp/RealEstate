@@ -330,7 +330,6 @@ const GetAllLoactionsByUser = (req, res) => {
                 FROM public.property
                 WHERE id_user = $1`, [userId])
         .then(result => {
-            console.log(result);
             return res.status(200).json({ message: "ok", count: result.rows });
         })
         .catch(error => {
@@ -348,7 +347,6 @@ const GetListingByIdListing = (req, res) => {
             [id]
         )
         .then(result => {
-            console.log(result);
             if (result.rowCount === 0) {
                 return res.status(200).json({ Message: " Propriété introuvable! " });
             }

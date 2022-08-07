@@ -20,17 +20,36 @@ const Propertie = () => {
             })
     }
 
+    const InsertVues = () => {
+        axios
+            .post('http://localhost:3006/api/AddVue', {
+                params: {
+                    id_property: params.id,
+                }
+            })
+            .then(response => {
+                console.log('vue added');
+            })
+            .catch(error => {
+                console.log('vue added');
+            })
+    }
+
     const handleCookies = (value) => {
-        if (cookies.listingViews)
-        {
-            // let tempArray = JSON.parse(cookies.listingViews);
-            console.log(cookies.listingViews);
+        if (cookies.listingViews) {
+            let temp = cookies.listingViews;
+            if (!temp.includes(params.id)) {
+                temp.push(params.id);
+                setCookie('listingViews', temp, { path: '/', expires: new Date(Date.now() + 24 * 30 * 3600 * 1000) });
+                InsertVues();
+            }
         }
-        else 
-        {
-            let temp = JSON.stringify([89,88]);
-            console.log(temp);
-            setCookie('listingViews',temp, { path: '/', expires: new Date(Date.now() + 24 * 30 * 3600 * 1000) });
+        else {
+            let temp = [params.id];
+            console.log('helooooooooooooooooooooooooooooooo');
+            setCookie('listingViews', temp, { path: '/', expires: new Date(Date.now() + 24 * 30 * 3600 * 1000) });
+            console.log('helooooooooooooooooooooooooooooooo');
+            InsertVues();
         }
 
     }

@@ -203,7 +203,7 @@ export const CommentsWrapper = styled.div`
     justify-content: flex-start;
     -webkit-box-align: center;
     align-items: center;
-    height: 1122px;
+    max-height: 1137px;
     overflow-y: scroll;
     ::-webkit-scrollbar {
     width: 10px;

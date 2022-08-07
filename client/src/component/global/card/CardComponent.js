@@ -21,11 +21,12 @@ import { HiUserGroup } from "react-icons/hi";
 import Slider from '../slider/Slider';
 import axios from 'axios';
 
-const CardComponent = ({ images, data, title, adresse, chambre, feet, prix, vues, typeBien, id }) => {
+const CardComponent = ({ images, data, title, adresse, chambre, feet, prix, typeBien, id }) => {
   const location = useLocation();
   const setData = useContext(DataContext);
   const [like, setLike] = useState(true);
   const [LikeCount, setLikeCount] = useState(0);
+  const [VuesCount, setVuesCount] = useState(0);
 
   const GetLikeState = () => {
     try {
@@ -49,7 +50,7 @@ const CardComponent = ({ images, data, title, adresse, chambre, feet, prix, vues
   const GetLikeCount = () => {
     try {
       axios
-        .get('http://localhost:3006/api/GetLikeState', {
+        .get('http://localhost:3006/api/GetLikeCount', {
           params: {
             id
           }
@@ -90,130 +91,154 @@ const CardComponent = ({ images, data, title, adresse, chambre, feet, prix, vues
           .then(response => {
             setLike(!like);
             setLikeCount(LikeCount - 1);
-            })
-          .catch (error => {
-  console.log(error);
-})
+          })
+          .catch(error => {
+            console.log(error);
+          })
       }
     } catch (error) {
-  console.log(error);
-}
+      console.log(error);
+    }
   }
 
-useEffect(() => {
-  GetLikeCount();
-  GetLikeState();
-}, [])
+  const GetVuesCount = () => {
+    try {
+      try {
+        axios
+          .get('http://localhost:3006/api/ShowVuesCount', {
+            params: {
+              id
+            }
+          })
+          .then(response => {
+            const { data } = response.data;
+            setVuesCount(response.data.data);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    GetLikeCount();
+    GetLikeState();
+    GetVuesCount();
+  }, [])
 
-return (
-  <>
-    {
-      location.pathname === '/Annonces' || location.pathname === '/Annonces' ?
-        <Card data-key={data} onMouseEnter={() => setData(data)}>
-          <CardHeader >
-            <Slider slides={images} />
-          </CardHeader>
-          <CardBody>
-            <CardBodyItem start row>
-              <div>
-                <Btn bgcolor="#E4DDFD" color='#9379EE'> <AiFillEye /> {vues} </Btn>
-                <Btn bgcolor="#FFEDDB" color='#E99037'><HiUserGroup /> {typeBien}</Btn>
-                <Btn bgcolor="#BDF1E0" color='#39D5A2'><AiFillLike /> {LikeCount}</Btn>
-              </div>
-              {
-                like ? <AiFillHeart onClick={PostLike} size={32} color='#EFA13B' /> : <AiOutlineHeart onClick={PostLike} size={32} color='#1f1f1fcc' />
-              }
-            </CardBodyItem>
-            <CardBodyItem row>
-              <Title>
-                {title}
-              </Title>
-            </CardBodyItem>
+  return (
+    <>
+      {
+        location.pathname === '/Annonces' || location.pathname === '/Annonces' ?
+          <Card data-key={data} onMouseEnter={() => setData(data)}>
+            <CardHeader >
+              <Slider slides={images} />
+            </CardHeader>
+            <CardBody>
+              <CardBodyItem start row>
+                <div>
+                  <Btn bgcolor="#E4DDFD" color='#9379EE'> <AiFillEye /> {VuesCount} </Btn>
+                  <Btn bgcolor="#FFEDDB" color='#E99037'><HiUserGroup /> {typeBien}</Btn>
+                  <Btn bgcolor="#BDF1E0" color='#39D5A2'><AiFillLike /> {LikeCount}</Btn>
+                </div>
+                {
+                  like ? <AiFillHeart onClick={PostLike} size={32} color='#EFA13B' /> : <AiOutlineHeart onClick={PostLike} size={32} color='#1f1f1fcc' />
+                }
+              </CardBodyItem>
+              <CardBodyItem row>
+                <Title>
+                  {title}
+                </Title>
+              </CardBodyItem>
 
-            <CardBodyItem start>
-              <Address><LocationIcon />{adresse} </Address>
-            </CardBodyItem>
-            <CardBodyItem start>
-              <IconWrapper spacebetween>
-                <IconWrapper>
-                  <BedIcon />
-                  {chambre} Chambres
-                </IconWrapper>
+              <CardBodyItem start>
+                <Address><LocationIcon />{adresse} </Address>
+              </CardBodyItem>
+              <CardBodyItem start>
+                <IconWrapper spacebetween>
+                  <IconWrapper>
+                    <BedIcon />
+                    {chambre} Chambres
+                  </IconWrapper>
 
-                {/* <IconWrapper>
+                  {/* <IconWrapper>
                     <BathIcon />
                       étages
                   </IconWrapper> */}
 
-                <IconWrapper>
-                  <SizeIcon />
-                  {feet} M²
-                </IconWrapper>
+                  <IconWrapper>
+                    <SizeIcon />
+                    {feet} M²
+                  </IconWrapper>
 
-              </IconWrapper>
-            </CardBodyItem>
-            <CardBodyItem row>
-              <IconWrapper width spacebetween aligncenter>
-                <Price>{prix} DZD</Price>
-                <SeeMoreBtn to='/property'>Voir plus</SeeMoreBtn>
-              </IconWrapper>
-            </CardBodyItem>
-          </CardBody>
-        </Card>
-        :
-        <Card data-key={data}>
-          <CardHeader >
-            <Slider slides={images} />
-          </CardHeader>
-          <CardBody>
-            <CardBodyItem start row>
-              <div>
-                <Btn bgcolor="#E4DDFD" color='#9379EE'> <AiFillEye /> {vues} </Btn>
-                <Btn bgcolor="#FFEDDB" color='#E99037'><HiUserGroup /> {typeBien}</Btn>
-                <Btn bgcolor="#D3F5EA" color='#30302E'><AiFillLike /> {LikeCount}</Btn>
-              </div>
-              {
-                like ? <AiFillHeart className='animate' onClick={PostLike} size={32} color='#EFA13B' /> : <AiOutlineHeart onClick={PostLike} size={32} color='#1f1f1fcc' />}
-            </CardBodyItem>
-            <CardBodyItem row>
-              <Title>
-                {title}
-              </Title>
-            </CardBodyItem>
-
-            <CardBodyItem start>
-              <Address><LocationIcon /> {adresse}</Address>
-            </CardBodyItem>
-            <CardBodyItem start>
-              <IconWrapper spacebetween>
-                <IconWrapper>
-                  <BedIcon />
-                  {chambre} Chambres
                 </IconWrapper>
-                {/* 
+              </CardBodyItem>
+              <CardBodyItem row>
+                <IconWrapper width spacebetween aligncenter>
+                  <Price>{prix} DZD</Price>
+                  <SeeMoreBtn to='/property'>Voir plus</SeeMoreBtn>
+                </IconWrapper>
+              </CardBodyItem>
+            </CardBody>
+          </Card>
+          :
+          <Card data-key={data}>
+            <CardHeader >
+              <Slider slides={images} />
+            </CardHeader>
+            <CardBody>
+              <CardBodyItem start row>
+                <div>
+                  <Btn bgcolor="#E4DDFD" color='#9379EE'> <AiFillEye /> {VuesCount} </Btn>
+                  <Btn bgcolor="#FFEDDB" color='#E99037'><HiUserGroup /> {typeBien}</Btn>
+                  <Btn bgcolor="#D3F5EA" color='#30302E'><AiFillLike /> {LikeCount}</Btn>
+                </div>
+                {
+                  like ? <AiFillHeart className='animate' onClick={PostLike} size={32} color='#EFA13B' /> : <AiOutlineHeart onClick={PostLike} size={32} color='#1f1f1fcc' />}
+              </CardBodyItem>
+              <CardBodyItem row>
+                <Title>
+                  {title}
+                </Title>
+              </CardBodyItem>
+
+              <CardBodyItem start>
+                <Address><LocationIcon /> {adresse}</Address>
+              </CardBodyItem>
+              <CardBodyItem start>
+                <IconWrapper spacebetween>
+                  <IconWrapper>
+                    <BedIcon />
+                    {chambre} Chambres
+                  </IconWrapper>
+                  {/* 
                   <IconWrapper>
                     <BathIcon />
                     
                   </IconWrapper> */}
 
-                <IconWrapper>
-                  <SizeIcon />
-                  {feet} M²
-                </IconWrapper>
+                  <IconWrapper>
+                    <SizeIcon />
+                    {feet} M²
+                  </IconWrapper>
 
-              </IconWrapper>
-            </CardBodyItem>
-            <CardBodyItem row>
-              <IconWrapper width spacebetween aligncenter>
-                <Price>{prix} DZD</Price>
-                <SeeMoreBtn to='/property'>Voir plus</SeeMoreBtn>
-              </IconWrapper>
-            </CardBodyItem>
-          </CardBody>
-        </Card>
-    }
-  </>
-)
+                </IconWrapper>
+              </CardBodyItem>
+              <CardBodyItem row>
+                <IconWrapper width spacebetween aligncenter>
+                  <Price>{prix} DZD</Price>
+                  <SeeMoreBtn to='/property'>Voir plus</SeeMoreBtn>
+                </IconWrapper>
+              </CardBodyItem>
+            </CardBody>
+          </Card>
+      }
+    </>
+  )
 }
 
 export default CardComponent

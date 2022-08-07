@@ -18,11 +18,13 @@ const {
 
 const { postComments, GetAllCommentsByIdProperty, GetLastComments, } = require('../controllers/Comments.controller');
 
-const { SendFirstStepEmail } = require('../controllers/Email.controller');
+const { SendFirstStepEmail, CheckEmailIExist, ResetPassword } = require('../controllers/Email.controller');
 
 const { GetAllNotificationByUserId, DeleteAllNotifications } = require('../controllers/Notifications.controllers')
 
 const { PostLike, GetLikeCount, GetLikeState, GetAllPropertyILike } = require('../controllers/Likes.controllers.js');
+
+const { AddVue, ShowVuesCount } = require('../controllers/Vue.controller.js');
 
 var router = express.Router();
 const auth = require('../middleware/auth')
@@ -88,8 +90,19 @@ router.post('/postComments', postComments);
 //route to get allcomments for the property page
 router.get('/GetAllCommentsByIdProperty', GetAllCommentsByIdProperty);
 
+//#region email 
+
 //send first email 
-router.get('/SendFirstStepEmail', SendFirstStepEmail);
+router.post('/SendFirstStepEmail', SendFirstStepEmail);
+
+//Check if email exist or no 
+router.post('/CheckEmailIExist', CheckEmailIExist);
+
+router.put('/ResetPassword', ResetPassword);
+
+//#endregion email 
+
+
 
 //get all comments that belong to a certain user 
 router.get('/GetLastComments', GetLastComments);
@@ -111,4 +124,12 @@ router.get('/GetAllNotificationByUserId', GetAllNotificationByUserId);
 
 router.delete('/DeleteAllNotifications', DeleteAllNotifications);
 //#endregion
+
+//#region Vues
+
+router.post("/Addvue", AddVue);
+
+router.get('/ShowVuesCount', ShowVuesCount);
+
+//#endregion Vues
 module.exports = router;

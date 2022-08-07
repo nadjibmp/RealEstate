@@ -66,7 +66,7 @@ const MainDashboard = () => {
       .then(result => { setTotalVues(result.data.count) })
       .catch(error => { console.log(error) })
   }
-
+console.log(totalVues);
   const GetTotalListings = () => {
     axios
       .get("http://localhost:3006/api/GetTotalListings")
@@ -216,7 +216,7 @@ const MainDashboard = () => {
               <StatContainer>
                 <div className='stat-type'>
                   <p>Vues totales</p>
-                  <span> {totalVues} </span>
+                  <span> {totalVues || 0} </span>
                 </div>
                 <div className='stat-percent'>
                   <Pie percentage={totalVues} colour="#EFA13B" />

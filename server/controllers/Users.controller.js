@@ -89,7 +89,6 @@ const Login = (req, res, next) => {
                     })
                     .catch((error) => {
                         res.status(500).json({ message: "Mot de pass invalide !" });
-                        console.log(error);
                     });
             }
         })
@@ -104,7 +103,6 @@ const Logout = (req, res) => {
         req.session.destroy()
         return res.status(200).json({ message: "Déconnecté" })
     } else {
-        console.log('already loggedout')
         res.status(500).json({ message: "vous êtes déjà déconnecté !" })
     }
 }

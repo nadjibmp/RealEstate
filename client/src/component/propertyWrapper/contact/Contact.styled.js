@@ -57,7 +57,7 @@ export const ContactBtn = styled.button`
     background-color: #E99037;
     color: #fff;
     font-weight: 400;
-    padding: 14px 25px;
+    padding: 14px 20px;
     border-radius: 0.35rem;
     font-family: 'poppins';
     letter-spacing: 0.5px;

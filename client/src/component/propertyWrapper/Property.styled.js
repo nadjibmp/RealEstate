@@ -53,7 +53,9 @@ export const ContactSection = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    
+    > form {
+        width: 100%;
+    }
 `;
 
 export const CondtionPaimentContainer = styled.div`

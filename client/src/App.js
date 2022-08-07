@@ -15,6 +15,7 @@ import Propertie from './pages/Propertie';
 import { AuthProvider } from './component/Auth';
 import { Navbar, Footer } from './component/index';
 import { BrowserRouter as Router, Route, Routes, } from "react-router-dom";
+import RecoverPassword from './pages/RecoverPassword';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' exact element={<Home />} />
+          <Route path='/recoverPassword' element={<RecoverPassword />} />
           <Route path='/inscrire' element={<SignUp />} />
           <Route path='/apropos' element={<Home />} />
           <Route path="/enregistrer" element={<SignInn />} />
@@ -31,7 +33,7 @@ function App() {
           <Route path="/dashboard" element={<DashBoard />}>
             <Route path="main" element={<MainDashboard />} />
             <Route path="properties" element={<PropDashboard />} />
-            <Route path="addproperty" element={<AddProperty/>} />
+            <Route path="addproperty" element={<AddProperty />} />
             <Route path="calendar" element={<Agenda />} />
             <Route path="liked" element={<Liked />} />
             <Route path="notifications" element={<Notification />} />

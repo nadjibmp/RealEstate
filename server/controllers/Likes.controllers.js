@@ -5,7 +5,6 @@ const PostLike = (req, res) => {
     try {
         const { id } = req.body;
         const { userId } = req.session.user;
-        console.log(id, userId);
 
         if (req.method == "POST") {
             pool
@@ -19,7 +18,6 @@ const PostLike = (req, res) => {
                     res.status(200).json({ message: "ok" });
                 })
                 .catch(error => {
-                    console.log(error);
                     res.status(400).json({ Message: "error interne" });
                 })
         }
@@ -32,7 +30,6 @@ const PostLike = (req, res) => {
                         res.status(200).json({ message: "ok" });
                     })
                     .catch(error => {
-                        console.log(error);
                         res.status(400).json({ Message: error });
                     })
             }
@@ -44,7 +41,6 @@ const PostLike = (req, res) => {
 const GetLikeCount = (req, res) => {
     try {
         const { id } = req.query;
-        console.log(req);
         pool
             .query(`SELECT COUNT (*) 
                     FROM public.likes
@@ -73,7 +69,6 @@ const GetLikeState = (req, res) => {
                 id
             ])
             .then(result => {
-                console.log(result.rows);
                 return res.status(200).json({ response: "Ok", data: result.rows[0].count });
             })
             .catch(error => {

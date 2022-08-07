@@ -9,3 +9,7 @@ export { default as SignIn } from './SignIn/SignIn';
 export { default as SearchBar } from './SearchBar/SearchBar';
 export { default as Property } from './propertyWrapper/Property';
 export { default as dashboard } from './Dashboard/Dashboard';
+export { default as EmailStep } from './ForgetPassword/PasswordSend/EmailStep'
+export { default as CheckEmail } from './ForgetPassword/CheckEmail/CheckEmail'
+export { default as ResetPassword } from './ForgetPassword/ResetPassword/ResetPassword'
+export { default as SuccessReset } from './ForgetPassword/SuccessReset/SuccessReset'

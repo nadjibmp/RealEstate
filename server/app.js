@@ -8,6 +8,9 @@ const path = require('path');
 const app = express();
 const store = new session.MemoryStore()
 const bodyParser = require('body-parser')
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 require('dotenv').config();
 
 
@@ -22,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.set('trust proxy', 1);
 app.use(cors(
     {
-        origin: ["http://localhost:3000"],
+        origin: ["http://localhost:3000/"],
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     }
@@ -33,7 +36,7 @@ app.use(cors(
 app.use(
     session(
         {
-            name:"user_session",
+            name: "user_session",
             secret: process.env.SESSION_TOKEN,
             saveUninitialized: false,
             resave: false,
@@ -44,7 +47,9 @@ app.use(
             },
         }
     ))
-
-
-app.use('/api', indexRouter);
-module.exports = app;
+    
+io.on("connection", (socket) => {
+    console.log("userConnected", socket.id);
+})
+    app.use('/api', indexRouter);
+    module.exports = app;
