@@ -83,6 +83,8 @@ const Hero = (props) => {
                 console.log(err);
             });
     };
+
+    
     const timer = () => {
         setTimeout(() => {
             setDisplay(false)

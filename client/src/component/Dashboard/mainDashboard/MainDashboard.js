@@ -78,7 +78,6 @@ console.log(totalVues);
     axios
       .get("http://localhost:3006/api/GetAllLoactionsByUser")
       .then(result => {
-        console.log(result);
         const tempArray = [];
         (result.data.count).forEach(element => {
           var mySubsTring = element.row.substring(element.row.indexOf("(") + 1, element.row.lastIndexOf(")"));

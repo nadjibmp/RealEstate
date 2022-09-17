@@ -7,9 +7,7 @@ const indexRouter = require('./routes/index');
 const path = require('path');
 const app = express();
 const store = new session.MemoryStore()
-const bodyParser = require('body-parser')
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+const bodyParser = require('body-parser');
 
 require('dotenv').config();
 
@@ -31,7 +29,6 @@ app.use(cors(
     }
 ));
 
-
 // Initialize a session 
 app.use(
     session(
@@ -48,8 +45,6 @@ app.use(
         }
     ))
     
-io.on("connection", (socket) => {
-    console.log("userConnected", socket.id);
-})
+
     app.use('/api', indexRouter);
     module.exports = app;

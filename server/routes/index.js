@@ -26,6 +26,17 @@ const { PostLike, GetLikeCount, GetLikeState, GetAllPropertyILike } = require('.
 
 const { AddVue, ShowVuesCount } = require('../controllers/Vue.controller.js');
 
+const { AddFirstMessage, GetRoomId, GetAllMessagesAvailable } = require('../controllers/Messages.controller.js');
+
+const { 
+    TakeAnAppointment, 
+    CheckIfRdvExist, 
+    GetAllVisits, 
+    ValidateRdv, 
+    DeleteRdv, 
+    CheckIfListingIsMine 
+    } = require('../controllers/Appointment.controller');
+
 var router = express.Router();
 const auth = require('../middleware/auth')
 
@@ -132,4 +143,29 @@ router.post("/Addvue", AddVue);
 router.get('/ShowVuesCount', ShowVuesCount);
 
 //#endregion Vues
+
+
+//#region Messages
+
+router.post("/AddFirstMessage", AddFirstMessage);
+
+router.get("/GetRoomId", GetRoomId);
+
+router.get("/GetAllMessagesAvailable", GetAllMessagesAvailable);
+
+
+
+//#region Appointment
+router.post("/TakeAnAppointment", TakeAnAppointment);
+
+router.get("/GetAllVisits", GetAllVisits);
+
+router.put("/ValidateRdv", ValidateRdv);
+
+router.delete("/DeleteRdv", DeleteRdv);
+
+router.get('/CheckIfListingIsMine', CheckIfListingIsMine);
+
+router.get('/CheckIfRdvExist', CheckIfRdvExist);
+
 module.exports = router;

@@ -8,7 +8,7 @@ const postComments = (req, res) => {
         const date = new Date();
 
         pool
-            .query(`INSERT INTO public.messages(description, id_user, id_property, date_publish)
+            .query(`INSERT INTO public.comments(description, id_user, id_property, date_publish)
                     VALUES($1, $2, $3, $4)`, [
                 message,
                 userId,
@@ -47,7 +47,7 @@ const GetAllCommentsByIdProperty = (req, res) => {
     const idProperty = req.query.id_user;
     pool
         .query(`SELECT m.description, m.date_publish, u.nom, u.prenom 
-                FROM public.messages m
+                FROM public.comments m
                 JOIN public.user u
                     ON m.id_user = u._id
                 WHERE id_property = $1`, [idProperty])
@@ -55,6 +55,7 @@ const GetAllCommentsByIdProperty = (req, res) => {
             return res.status(200).json({ response: "ok", data: result.rows });
         })
         .catch(error => {
+            console.log(error);
             return res.status(401).json({ message: error });
         })
 }
@@ -63,7 +64,7 @@ const GetLastComments = (req, res) => {
     const { userId } = req.session.user;
     pool
         .query(`SELECT  m.description, m.date_publish, p.title,m.id_user, u.nom, u.prenom
-                FROM public.messages m
+                FROM public.comments m
                     JOIN public.property p
                     ON m.id_property = p._id_property
                     JOIN public.user u 

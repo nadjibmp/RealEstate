@@ -12,14 +12,17 @@ import SignUp from './pages/SignUp';
 import SignInn from './pages/SignInn';
 import Annonces from './pages/Annonces';
 import Propertie from './pages/Propertie';
-import { AuthProvider } from './component/Auth';
+import { AuthProvider } from './component/GlobalContext/Auth';
 import { Navbar, Footer } from './component/index';
 import { BrowserRouter as Router, Route, Routes, } from "react-router-dom";
 import RecoverPassword from './pages/RecoverPassword';
 
+import { SocketProvider } from "./component/GlobalContext/SocketContext";
+
 function App() {
   return (
     <AuthProvider>
+      <SocketProvider>
       <Router>
         <Navbar />
         <Routes>
@@ -43,6 +46,7 @@ function App() {
         </Routes>
         <Footer />
       </Router>
+      </SocketProvider>
     </AuthProvider>
   );
 }

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Row } from '../../heroSection/Hero.styled'
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineAttachFile, MdSend } from "react-icons/md";
-import io from 'socket.io-client';
+import { useParams } from 'react-router-dom';
 import {
   Wrapper,
   SideMsgBar,
@@ -17,33 +16,99 @@ import {
   FormWrapper,
   Status
 } from './MsgDashboard.styled';
+import { useSocket } from '../../GlobalContext/SocketContext';
+import axios from 'axios';
 
-const socket = io.connect("http://localhost:3006");
 const MsgDashBoard = () => {
-  const [currentMessage, setCurrentMessage] = useState("");
-  const [currentReceiver, setCurrentReceiver] = useState("");
-  const [allMessages,  setAllMessage] = useState([]);
-  const [room, setRoom] = useState('000');
 
+  //States.....
+  const [briefMsg, setBriefMsg] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [allMessages, setAllMessage] = useState([]);
+  const [roomId, setRoomId] = useState('');
+  const socket = useSocket();
+
+
+  //Functions ...
+
+
+  //**************** Send Message *********************/
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
-        room,
+        roomId,
         author: "nadjib",
         message: currentMessage,
         time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
       };
-
       socket.emit("send_message", messageData);
     }
   }
 
-  useEffect(() => {
-    socket.emit("join_room", room);
-    socket.on("receive_message", (data) => {
-      console.log('');
+
+  /*********************** JOIN ROOM *****************/
+  const joinRoom = () => {
+    // socket.emit("join_room", room);
+  }
+
+  /**********************  Get All Messages ************/
+
+  const GetAllMessagesAvailable = async () => {
+    try {
+      const response = await axios.get("http://localhost:3006/api/GetAllMessagesAvailable");
+      if (response) {
+        const tempArray = [];
+        const { data } = response.data;
+        //prerocessing the data 
+        data.forEach(element => {
+          var mySubsTring = element.row.substring(element.row.indexOf("(") + 1, element.row.lastIndexOf(")"));
+          var tempObj = mySubsTring.split(",");
+          tempArray.push({
+            profilePic: tempObj[0],
+            nom: tempObj[1],
+            prenom: tempObj[2],
+            message: tempObj[3],
+            time: tempObj[4],
+            room: tempObj[5]
+          })
+        })
+        const byRoom = tempArray.reduce((a, b) => (a[b.room] ? a[b.room].push(b) : a[b.room] = [b], a), {});
+        const arrayClassified = Object.values(byRoom);
+        setAllMessage(arrayClassified);
+      }
+    } catch (error) {
+      //handle error here 
+      console.log(error);
+    }
+  }
+
+  /*******************Set Biref Messages*****************/
+  const SetBriefMessages = () => {
+    allMessages.forEach(element => {
+      element.reverse();
+      for (let index = 0; index < element.length; index++) {
+        if (element[index].room.endsWith(JSON.parse(localStorage.getItem('userID')).userId)) {
+          setBriefMsg(prevState => [...prevState, element[index]]);
+          break;
+        }
+      }
     })
-  }, [socket])
+  }
+
+  // End Function Section
+
+  useEffect(() => {
+    // joinRoom();
+    // socket.on("receive_message", (data) => {
+    //   console.log(data);
+    // });
+    GetAllMessagesAvailable();
+  }, [])
+
+  useEffect(() => {
+    SetBriefMessages();
+  }, [allMessages])
+  
 
   return (
     <>
@@ -52,63 +117,63 @@ const MsgDashBoard = () => {
           <MsgRow item xs={3}>
             <SideMsgBar >
               <div className='header'>
-                <span>Discussion</span>
+                <span>Discussions</span>
                 <AiOutlineSearch color={"#323B4D"} size={24} />
               </div>
-              <MsgItem >
+
+              {/*Shows all the messages available for the user.... */}
+
+              {/* Begin of the component */}
+              {
+                briefMsg.map(element => {
+                  return(
+                    <MsgItem >
                 <ProfilePic>
-                  <img src="/profile.jpg" alt="profile" />
+                  <img src={"http://localhost:3006/images/" + element.profilePic} alt="profile" />
                 </ProfilePic>
                 <MsgInfoWrapper>
                   <div>
                     <MsgSender>
-                      Annane Ahmed Nadjib
+                      {
+                        element.nom + element.prenom
+                      }
                     </MsgSender>
                     <span className='time'>
-                      10-02
+                      {element.time}
                     </span>
                   </div>
                   <MsgBrief>
-                    Hello i'am interested in your house situated in annaba
+                    {element.message}
                   </MsgBrief>
                 </MsgInfoWrapper>
               </MsgItem>
-
-              <MsgItem>
-                <ProfilePic><img src="/profile.jpg" alt="profile" /></ProfilePic>
-                <MsgInfoWrapper>
-                  <div>
-                    <MsgSender>
-                      Annane Ahmed Nadjib
-                    </MsgSender>
-                    <span className='time'>
-                      10-02
-                    </span>
-                  </div>
-                  <MsgBrief>
-                    Hello i'am interested in your house situated in annaba
-                  </MsgBrief>
-                </MsgInfoWrapper>
-              </MsgItem>
-
-              <MsgItem>
+                  )
+                })
+              }
+              {/* <MsgItem >
                 <ProfilePic>
-                  <img src="/profile.jpg" alt="profile" />
+                  <img src={"http://localhost:3006/images/" + element[index].profilePic} alt="profile" />
                 </ProfilePic>
                 <MsgInfoWrapper>
                   <div>
                     <MsgSender>
-                      Annane Ahmed Nadjib
+                      {
+                        element[index].nom + element[index].prenom
+                      }
                     </MsgSender>
                     <span className='time'>
-                      10-02
+                      {element[index].time}
                     </span>
                   </div>
                   <MsgBrief>
-                    Hello i'am interested in your house situated in annaba
+                    {element[index].message}
                   </MsgBrief>
                 </MsgInfoWrapper>
-              </MsgItem>
+              </MsgItem> */}
+
+              {/* ENd of the component */}
+
+
             </SideMsgBar>
           </MsgRow>
           <MsgRow item xs={9}>

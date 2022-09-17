@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Auth';
+import { useAuth } from '../GlobalContext/Auth';
 import { Formik, Form, ErrorMessage } from "formik";
 import { BiErrorCircle } from "react-icons/bi";
 import { initialValues, validationSchema } from './signinArgs/Args';

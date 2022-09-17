@@ -1,9 +1,15 @@
 import styled from "styled-components";
 import { AiFillHeart } from 'react-icons/ai';
 import { AiFillMessage } from 'react-icons/ai';
+import { BsFillInfoCircleFill } from 'react-icons/bs'
 
+export const Container = styled.section`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+`;
 
-export const Wrapper = styled.section`
+export const Wrapper = styled.div`
     margin: 1px 24px; 
     font-family: "Open Sans", sans-serif;
     width:70%;
@@ -124,3 +130,104 @@ export const MessageIcon = styled(AiFillMessage)`
     color: #fff;
     font-size: 16px;
 `;
+
+
+
+/* Rendez vous section */
+
+export const RdvSection = styled.div`
+    width: 25%;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    h2 {
+        width: 100%;
+        display: flex;
+        padding: 15px 20px;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Open sans', sans-serif;
+        font-weight: 500;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+        transition: all 0.2s ease-out;
+        font-family: 'poppins', sans-serif;
+        font-size: 16px
+    }
+`;
+
+export const RdvCard = styled.div`
+    padding: 15px 20px;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    transition: all 0.2s ease-out;
+    width: 100%;
+    margin: 10px 0;
+    .card-title
+    {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        > h3 
+        {
+            font-weight: 500;
+            font-family: '', sans-serif;
+        }
+    }
+
+    .card-body
+    {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin: 10px 0;
+        font-family: 'open sans', sans-serif;
+        line-height: 1.8;
+    }
+
+    .footer-card
+    {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content:space-evenly;
+        button
+        {
+            padding: 5px 20px;
+            background: transparent;
+            border: transparent;
+            cursor: pointer;
+            font-family: "poppins";
+            border-radius: 7px;
+            color: #EFA13B;
+            transition: all 0.2s ease;
+            &:first-child:hover
+            {
+                color: green;
+                background-color: #C6E2C6;
+            }
+            &:last-child{
+                background-color: #FCF1E1 ;
+                &:hover{
+                    background-color: transparent;
+                    color: red;
+                    background-color: #FFC6C6;
+                }
+            }
+        }
+    }
+`;
+
+export const InfoIcon = styled(BsFillInfoCircleFill)`
+    color: #EFA13B;
+    margin-right: 5px;
+`;
+
+

@@ -11,8 +11,8 @@ const GetAllNotificationByUserId = (req, res) => {
                         ON n.id_property = p._id_property
                     JOIN public.user u
                         ON n.id_user = u._id
-                WHERE p.id_user = $1    
-                `, [userId])
+                WHERE p.id_user = $1  AND NOT n.type = $2  
+                `, [userId, 'rdv'])
             .then(result => {
                 return res.status(200).json({ response: "Ok", data: result.rows });
             })
@@ -44,5 +44,7 @@ const DeleteAllNotifications = (req, res) => {
     }
 
 }
+
+
 
 module.exports = { GetAllNotificationByUserId, DeleteAllNotifications }

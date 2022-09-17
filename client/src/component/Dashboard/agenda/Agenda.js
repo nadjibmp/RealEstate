@@ -6,14 +6,30 @@ import moment from 'moment';
 import 'moment/locale/fr';
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { AgendaContainer, Container } from './Agenda.styled';
-import Map from '../../annoncebody/mapComponent/Map';
 const localizer = momentLocalizer(moment)
 
 const Agenda = (props) => {
     const now = new Date();
-    console.log(now);
     const myEventsList = [
         {
+            title: "Hello it annane ahmed nadjib requesting a rdv at ",
+            start: now,
+            end: now,
+            allDay: true,
+        },
+        {
+            title: "Hello",
+            start: now,
+            end: now,
+            allDay: true,
+        },
+        {
+            title: "Hello",
+            start: now,
+            end: now,
+            allDay: true,
+        },
+                {
             title: "Hello",
             start: now,
             end: now,

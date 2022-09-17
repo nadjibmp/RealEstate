@@ -19,7 +19,7 @@ import {
     AddIcon
 } from './SideBar.styled';
 import img from './logocutted.png'
-import { useAuth } from '../../Auth';
+import { useAuth } from '../../GlobalContext/Auth';
 const SideBar = () => {
     const auth = useAuth()
     

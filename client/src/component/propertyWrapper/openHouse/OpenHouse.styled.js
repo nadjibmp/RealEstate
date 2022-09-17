@@ -13,6 +13,18 @@ export const OpenHouseWrapper = styled.div`
     box-sizing: border-box;
     margin-top: 20px;
     box-shadow: rgb(100 100 111 / 10%) 0px 7px 29px 0px;
+
+    .Success-rdv{
+        background-color: #39D5A2;
+    }
+    .disable{
+        background-color: #ddd;
+        &:hover{
+            cursor: not-allowed;
+            background: #ddd;
+            color: #000;
+        }
+    }
 `;
 
 export const Header = styled.h3`

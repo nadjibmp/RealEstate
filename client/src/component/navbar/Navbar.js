@@ -19,7 +19,7 @@ import logo3 from './logo3.svg';
 import logo1 from './logo1.svg';
 import { MdSpaceDashboard, MdLogout } from "react-icons/md";
 import { AiFillHeart } from "react-icons/ai";
-import { useAuth } from '../Auth';
+import { useAuth } from '../GlobalContext/Auth';
 
 
 
