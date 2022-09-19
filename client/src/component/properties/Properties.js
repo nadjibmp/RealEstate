@@ -9,6 +9,7 @@ import {
 import CardComponent from '../global/card/CardComponent'
 import axios from 'axios'
 const Properties = () => {
+    axios.defaults.withCredentials = true;
     const [AllProperties, setAllProperties] = useState([]);
 
     const getImagesBySplit = (str) => {
