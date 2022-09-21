@@ -58,6 +58,6 @@ export const Container = styled(StatContainer)`
     height: 100%;
     font-family: 'poppins';
     margin-top: 0;
-    padding: 10px 20px;
+    padding: 15px 20px;
     font-size: 14px;
 `;

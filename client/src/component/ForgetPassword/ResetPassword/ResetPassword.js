@@ -23,6 +23,7 @@ const ResetPassword = ({email, setCount}) => {
 
 
     const ResetPassword = (values) => {
+        console.log(email);
         try {
             axios
                 .put("http://localhost:3006/api/ResetPassword",{
