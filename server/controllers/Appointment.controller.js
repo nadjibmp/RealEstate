@@ -52,7 +52,7 @@ const GetAllVisits = async (req, res) => {
                                         FROM public.appoinment a
                                         JOIN public.property p
                                             ON a.id_listing = _id_property
-                                        WHERE p.id_user = $1`, [userId]);
+                                        WHERE p.id_user = $1 AND a.status = $2` , [userId, false]);
         if (result) {
             res.status(200).json({
                 Message: "Ok",
@@ -84,7 +84,6 @@ const ValidateRdv = async (req, res) => {
                                         WHERE _id_appoinment = $2`, 
                                         [true, data._id_appoinment]);
         if (result) {
-console.log(result);
             const results = await pool.query(`
                 INSERT INTO public.evenement(description, id_user, start_date, type)
                 VALUES ($1, $2, $3, $4)

@@ -1,6 +1,9 @@
 import styled from "styled-components";
-import { StatWrapper,StatContainer } from '../mainDashboard/MainDashboard.styled';
-export const AgendaWrapper =  styled.div`
+import { StatWrapper, StatContainer } from '../mainDashboard/MainDashboard.styled';
+import { BsCheckCircleFill } from "react-icons/bs";
+
+
+export const AgendaWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,3 +64,71 @@ export const Container = styled(StatContainer)`
     padding: 15px 20px;
     font-size: 14px;
 `;
+
+export const ModalContainer = styled.div`
+    .modal-title
+    {
+        font-size: 26px;
+        font-family: 'poppins', sans-serif;
+        line-height: 1.2;
+        font-weight: 500;
+        width:100%;
+        border-bottom: 2px solid #ededed;
+        color:#1d1d1d;
+        padding-bottom: 20px;
+    }
+
+    form {
+        width:100%;
+    }
+
+    input {
+        width: 100%;
+        border-color: #e7e7e7;
+        background-color: #f7f7f7!important;
+        outline: none!important;
+    } 
+        .date-picker {
+            > div{
+                padding: 7.5px 12px !important;
+                width: 90%;
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                border-radius: 5px;
+                outline: none;
+                font-family: "Open Sans";
+                font-size: 14px;
+                width: 100%;
+                border-color: #e7e7e7;
+                background-color: #f7f7f7;
+                &:focus {
+                    border-color: #efa13b;
+                }
+            }
+        }
+    .align-text{
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        font-family: 'poppins', sans-serif;
+        font-size: 15px;
+        color: #737373;
+        font-weight: 300;
+    }
+    .submit-btn{
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 16px;
+        font-family: 'open sans', sans-serif;
+        letter-spacing: 0.4px;
+    }
+    
+`;
+
+export const SuccessIcon = styled(BsCheckCircleFill)`
+    color: #00BA34;
+    margin-right: 5px;
+    font-size: 16px;
+`;
+
+

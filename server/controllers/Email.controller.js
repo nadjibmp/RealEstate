@@ -60,7 +60,6 @@ const ResetPassword = (req, res) => {
     try {
         const { email } = req.body;
         const { password } = req.body;
-        console.log(req);
         bcrypt
             .hash(password, 10)
             .then((hash) => {
@@ -69,7 +68,6 @@ const ResetPassword = (req, res) => {
                             SET motdepass = $1
                             WHERE email = $2`, [hash, email])
                     .then(result => {
-                        console.log(result);
                         return res.status(200).json({ response: "Mise à jour avec succée"});
 
                     })

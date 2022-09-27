@@ -84,13 +84,16 @@ const GetAllPropertyILike = (req, res) => {
     try {
         const { userId } = req.session.user;
         pool
-            .query(`SELECT(p.title, p.adresse, p.price, p.vues, p.date_publish, p.categorie, pi.img_url)
+            .query(`SELECT(p.title, p.adresse, p.price,COUNT(v.id_property), p.date_publish, p.categorie, pi.img_url,p._id_property)
                     FROM public.property p
                         INNER JOIN property_img pi
                             ON p._id_property = pi.id_property
                         INNER JOIN public.likes l
                             ON p._id_property = l.id_property
-                    Where l.id_user = $1`, [userId])
+                        INNER JOIN public.vues v
+                            ON p._id_property = v.id_property
+                    Where l.id_user = $1
+                    GROUP BY (p._id_property, p.title, p.adresse, p.price,p.date_publish, p.categorie, pi.img_url)`, [userId])
             .then(result => {
                 const tempArray = [];
                 (result.rows).forEach(element => {

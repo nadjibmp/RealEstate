@@ -28,15 +28,16 @@ const { AddVue, ShowVuesCount } = require('../controllers/Vue.controller.js');
 
 const { AddFirstMessage, GetRoomId, GetAllMessagesAvailable } = require('../controllers/Messages.controller.js');
 
-const { 
-    TakeAnAppointment, 
-    CheckIfRdvExist, 
-    GetAllVisits, 
-    ValidateRdv, 
-    DeleteRdv, 
-    CheckIfListingIsMine 
-    } = require('../controllers/Appointment.controller');
+const {
+    TakeAnAppointment,
+    CheckIfRdvExist,
+    GetAllVisits,
+    ValidateRdv,
+    DeleteRdv,
+    CheckIfListingIsMine
+} = require('../controllers/Appointment.controller');
 
+const { GetAllEvents, AddEvenet } = require('../controllers/Events.controller');
 var router = express.Router();
 const auth = require('../middleware/auth')
 
@@ -167,5 +168,13 @@ router.delete("/DeleteRdv", DeleteRdv);
 router.get('/CheckIfListingIsMine', CheckIfListingIsMine);
 
 router.get('/CheckIfRdvExist', CheckIfRdvExist);
+
+
+
+//#region Envents
+router.get("/GetAllEvents", GetAllEvents);
+
+router.post("/AddEvenet", AddEvenet);
+
 
 module.exports = router;

@@ -2,18 +2,81 @@ import React, { useMemo, useEffect, useState } from 'react'
 import axios from 'axios';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useTable, useGlobalFilter, usePagination } from 'react-table'
-import { COLUMNS } from './columns'
 import {
     Header,
     PropertyWrapper,
     SearchWrapper,
     CardContainer,
 } from '../proprieteDashboard/propDashboard.styled';
+import { FaTimes } from "react-icons/fa";
 import { Row } from '../mainDashboard/MainDashboard.styled';
 import { SearchIcon } from '../../SearchBar/SearchBar.styled';
 import GlobalFilter from '../proprieteDashboard/GlobalFilter';
+import { Icon, DeleteButton } from './Likde.styled'
 
 function Liked() {
+    const COLUMNS = [
+        {
+            Header: 'Image',
+            accessor: 'id',
+            Cell: tableProps => (
+                <div>
+                    <img
+                        src={tableProps.row.original.image}
+                        alt='home'
+                    />
+                </div>
+            ),
+        },
+        {
+            Header: 'Titre',
+            accessor: 'title',
+            Cell: tableProps => (
+                <div>
+                    <p className="table-title">{tableProps.row.original.title}</p>
+                    <span className="table-address"><Icon />{tableProps.row.original.address}</span>
+                    <p className="table-price">{tableProps.row.original.price}</p>
+                </div>
+            ),
+        },
+        {
+            Header: 'Status',
+            accessor: 'status',
+            Cell: tableProps => (
+                <div>
+                    <div className="wrapper">
+                        <span className="table-address"> Voir: </span>
+                        <p> {tableProps.row.original.view}.</p>
+                    </div>
+                    <div className="wrapper">
+                        <span className="table-address">Publié: </span>
+                        <p> {tableProps.row.original.date_pub}.</p>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            Header: 'Type',
+            accessor: 'type',
+            Cell: tableProps => (
+                <div>
+                    <div className="wrapper">
+                        <p> {tableProps.row.original.type}. {console.log(tableProps.row.original.type)};</p>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            Header: 'Éditer',
+            Cell: tableProps => (
+                <div className="wrapper">
+                    <DeleteButton onClick={sayHello} data-listing-id={tableProps.row.original.id_property}><FaTimes /></DeleteButton>
+                </div>
+            ),
+        }
+    ]
+
+    
     const [realData, setRealData] = useState([])
     const columns = useMemo(() => COLUMNS, []);
     const data = realData;
@@ -42,6 +105,11 @@ function Liked() {
 
     const { globalFilter, pageIndex } = state;
     //Fetching data from the server 'getting listing by id'
+
+
+    const sayHello = () => {
+        console.log('heloooooooo');
+    }
     const getData = (req, res) => {
         const id_user = JSON.parse(localStorage.getItem("userID"));
         axios
@@ -55,7 +123,6 @@ function Liked() {
             .then(result => {
                 const tempArray = [];
                 const { data } = result.data;
-                console.log(data);
                 data.map(element => {
                     tempArray.push({
                         "title": element[0].substring(element[0].indexOf("\"") + 1, element[0].lastIndexOf("\"")),
@@ -64,16 +131,17 @@ function Liked() {
                         "price": `DZD ${element[2]}`,
                         "view": element[3] === "" ? `0 fois` : element[3],
                         "date_pub": element[4],
-                        "image": `http://localhost:3006/images/${element[6].substring(element[1].indexOf('\"') + 1, element[1].lastIndexOf(''))}`
+                        "image": `http://localhost:3006/images/${element[6].substring(element[1].indexOf('\"') + 1, element[1].lastIndexOf(''))}`,
+                        "id_property": element[element.length - 1].substring(0, element[element.length - 1].indexOf(")"))
                     })
                 })
                 setRealData(tempArray);
             })
-            // console.log(data[0][0].substring(data[1][0].indexOf("\"") + 1, data[0][0].lastIndexOf("\"")));
             .catch(err => {
                 console.log(err);
             })
     }
+    console.log(realData);
     useEffect(() => {
         getData();
         window.scrollTo(0, 0)

@@ -46,9 +46,7 @@ const Propertie = () => {
         }
         else {
             let temp = [params.id];
-            console.log('helooooooooooooooooooooooooooooooo');
             setCookie('listingViews', temp, { path: '/', expires: new Date(Date.now() + 24 * 30 * 3600 * 1000) });
-            console.log('helooooooooooooooooooooooooooooooo');
             InsertVues();
         }
 

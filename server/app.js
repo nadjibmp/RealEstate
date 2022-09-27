@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 //preventing cors error 
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:3000', 'http://localhost:3000/'];
 const corsOptions = {
   credentials: true, // This is important.
   origin: (origin, callback) => {

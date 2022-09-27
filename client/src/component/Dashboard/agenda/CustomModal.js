@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { AddPropIcon, AgendaBtn } from "../mainDashboard/MainDashboard.styled";
 
 const style = {
@@ -10,22 +8,22 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 700,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  borderRadius:1,
   boxShadow: 24,
   p: 4,
 };
 
-const CustomModal = () => {
-  const [open, setOpen] = useState(true);
+const CustomModal = ({children, open, setOpen}) => {
+  
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
       <div>
-        <AgendaBtn>
-          <AddPropIcon onClick={handleOpen}/>
+        <AgendaBtn onClick={handleOpen}>
+          <AddPropIcon/>
         </AgendaBtn>
         <Modal
           open={open}
@@ -34,7 +32,7 @@ const CustomModal = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-              <h1> hello mother father</h1>
+              {children}
           </Box>
         </Modal>
       </div>
